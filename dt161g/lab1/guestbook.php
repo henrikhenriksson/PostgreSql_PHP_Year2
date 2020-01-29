@@ -15,13 +15,14 @@ $title = "Laboration 1";
 session_start();
 date_default_timezone_set('Europe/Stockholm');
 //---------------------------------------------------------------------------
-$filename = "posts.json";
+// $filename = "posts.json";
+$filename = __DIR__ . "/../../writeable/posts.json";
 
 // load posts from json file.
-$posts = readfromFile($filename);
+$posts = readFromFile($filename);
 
 // Used for debugging and testing:
-setcookie('HasPosted', "PostedTrue", time() - 3600);
+//setcookie('HasPosted', "PostedTrue", time() - 3600);
 
 // Generate the random Captcha
 $randCaptcha = generateCaptcha();
@@ -31,22 +32,21 @@ $iName = '';
 $iText = '';
 $ErrorMessage = '';
 
-// check wether something has been previously submitted 
+// check wether something has been previously submitted
 if (!empty($_POST)) {
-    // save the values.
-    $iName = $_POST['name'];
-    $iText = $_POST['text'];
     // check if the entered captcha was valid:
     if ($_POST['captcha'] === $_SESSION["sCap"]) {
         // store the values the user has entered.
         storePosts($posts);
-        if (printToFile($posts, $filename)) {
-            // Set a cookie in the users browser if the post was stored successfully.
-            setcookie('HasPosted', gethostname(), time() + (60 * 1));
-        }
+        printToFile($posts, $filename);
+        // set cookie
+        setcookie('HasPosted', gethostname(), time() + (60 * 5));
         // Refresh the Page:
         header("Refresh:0");
     } else {
+        // save the values.
+        $iName = $_POST['name'];
+        $iText = $_POST['text'];
         $ErrorMessage = "Incorrect Captchka, please try again [No Robots!]";
     }
 }
@@ -92,7 +92,7 @@ function storePosts(array &$posts)
     ];
 }
 //---------------------------------------------------------------------------
-function readfromFile(string $filename)
+function readFromFile($filename)
 {
 
     if (is_readable($filename)) {
@@ -104,16 +104,14 @@ function readfromFile(string $filename)
     }
 }
 //---------------------------------------------------------------------------
-function printToFile(array $posts, string $filename)
+function printToFile(array &$posts, $filename)
 {
-    if (is_writable($filename)) {
-        $postsJson = json_encode($posts);
-        file_put_contents(__DIR__ . '/' . $filename, $postsJson);
-        // file_put_contents(__DIR__ . '/posts.json', $postsJson);
-        return true;
-    } else {
-        return false;
-    }
+
+    $postsJson = json_encode($posts);
+    file_put_contents($filename, $postsJson);
+    // file_put_contents($filename, $postsJson);
+    // file_put_contents(__DIR__ . '/posts.json', $postsJson);
+
 }
 
 
@@ -132,55 +130,51 @@ function printToFile(array $posts, string $filename)
 </head>
 
 <body>
-    <header>
-        <img src="img/mittuniversitetet.jpg" alt="miun logga" class="logo" />
-        <h1><?php echo $title ?></h1>
-    </header>
-    <main>
-        <aside>
-            <h2>LOGIN</h2>
-            <form action="index.php">
-                <label><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required maxlength="10">
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
-                <button type="submit">Login</button>
-            </form>
-            <h2>MENY</h2>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="index.php">HEM</a>
-                    </li>
+<header>
+    <img src="img/mittuniversitetet.jpg" alt="miun logga" class="logo" />
+    <h1><?php echo $title ?></h1>
+</header>
+<main>
+    <aside>
+        <h2>LOGIN</h2>
+        <form action="index.php">
+            <label><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" required maxlength="10">
+            <label><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+            <button type="submit">Login</button>
+        </form>
+        <h2>MENY</h2>
+        <nav>
+            <ul>
+                <li>
+                    <a href="index.php">HEM</a>
+                </li>
 
-                </ul>
-            </nav>
-        </aside>
-        <section>
-            <h2>GÄSTBOK</h2>
-            <table>
+            </ul>
+        </nav>
+    </aside>
+    <section>
+        <h2>GÄSTBOK</h2>
+        <table>
+            <tr>
+                <th class="th20">FRÅN
+                </th>
+                <th class="th40">INLÄGG
+                </th>
+                <th class="th40">LOGGNING
+                </th>
+            </tr>
+            <!-- create a  new table row for each post in the posts array -->
+            <?php foreach ($posts as $key) : ?>
                 <tr>
-                    <th class="th20">FRÅN
-                    </th>
-                    <th class="th40">INLÄGG
-                    </th>
-                    <th class="th40">LOGGNING
-                    </th>
+                    <td><?php echo $key['name'] ?></td>
+                    <td><?php echo $key['text'] ?> </td>
+                    <td> <?php echo "IP:{$key['ip']}" ?> <br>
+                        <?php echo "Tid: {$key['time']}" ?> </td>
                 </tr>
-
-
-                <!-- create a  new table row for each post in the posts array -->
-                <?php if (!empty($posts)) : ?>
-                    <?php foreach ($posts as $key) : ?>
-                        <tr>
-                            <td><?php echo $key['name'] ?></td>
-                            <td><?php echo $key['text'] ?> </td>
-                            <td> <?php echo "IP:{$key['ip']}" ?> <br>
-                                <?php echo "Tid: {$key['time']}" ?> </td>
-                        </tr>
-                    <?php endforeach; ?>
-            </table>
-        <?php endif; ?>
+            <?php endforeach; ?>
+        </table>
 
 
         <!-- Only print the form if the user has not previously posted: -->
@@ -203,11 +197,11 @@ function printToFile(array $posts, string $filename)
             </form>
         <?php endif; ?>
 
-        </section>
-    </main>
-    <footer>
-        Footer
-    </footer>
+    </section>
+</main>
+<footer>
+    Footer
+</footer>
 </body>
 
 </html>
