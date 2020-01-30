@@ -8,9 +8,14 @@
 -- ##############################################
 
 -- ##############################################
+-- First we create the schema if it not exists
+-- ##############################################
+CREATE SCHEMA IF NOT EXISTS dt161G ;
+
+-- ##############################################
 -- First we create the member table
 -- ##############################################
-DROP TABLE IF EXISTS dt161g.member;
+DROP TABLE IF EXISTS dt161g.member CASCADE;
 
 CREATE TABLE dt161g.member (
   id        SERIAL PRIMARY KEY,
@@ -29,7 +34,7 @@ INSERT INTO dt161g.member (username, password) VALUES ('a','a');
 -- ##############################################
 -- Then we create the role table
 -- ##############################################
-DROP TABLE IF EXISTS dt161g.role;
+DROP TABLE IF EXISTS dt161g.role CASCADE;
 
 CREATE TABLE dt161g.role (
   id        SERIAL PRIMARY KEY,
@@ -94,9 +99,7 @@ WITHOUT OIDS;
 -- ##############################################
 
 -- First we have to create the language we are going to write our function.
-DROP LANGUAGE IF EXISTS plpgsql CASCADE;
-
-CREATE LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql;
 
 -- When we have created required language we can create our function
 DROP FUNCTION IF EXISTS dt161g.save_member_change();
@@ -131,6 +134,3 @@ AFTER UPDATE
   ON dt161g.member
 FOR EACH ROW
 EXECUTE PROCEDURE dt161g.save_member_change();
-
-
-
