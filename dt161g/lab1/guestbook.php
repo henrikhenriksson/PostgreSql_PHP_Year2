@@ -42,9 +42,9 @@ if (!empty($_POST)) {
         // set cookie, currently set to 5 minutes for testing.
         setcookie('HasPosted', gethostname(), time() + (60 * 5));
         // Refresh the Page:
-        header("Refresh:0");
+        header("Location: guestbook.php");
     } else {
-        // save the values.
+        // save the values, in case the user enteres incorrect captchka
         $iName = $_POST['name'];
         $iText = $_POST['text'];
         $ErrorMessage = "Incorrect Captchka, please try again [No Robots!]";
@@ -72,7 +72,7 @@ function generateCaptcha()
     return $randomized;
 }
 //---------------------------------------------------------------------------
-// store the post to the guestbook array
+// store the post to the guestbook array, making sure to reformat any special characters as scripting protection.
 function storePosts(array &$posts)
 {
     $posts[] = [
@@ -116,7 +116,6 @@ function readFromFile($filename)
 // print the guestbook posts array to file.
 function printToFile(array &$posts, $filename)
 {
-
     $postsJson = json_encode($posts);
     file_put_contents($filename, $postsJson);
 }
