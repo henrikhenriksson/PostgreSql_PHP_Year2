@@ -46,11 +46,12 @@ window.addEventListener('load', main, false); // Connect the main function to wi
  * Function doLogin
  ******************************************************************************/
 function doLogin() {
-  console.log('change');
+  const UNAME = byId('uname').value;
+  const PSW = byId('psw').value;
 
   if ((byId('uname').value != '') & (byId('psw').value != '')) {
     xhr.addEventListener('readystatechange', processLogin, false);
-    xhr.open('GET', 'login.php', true);
+    xhr.open('GET', `login.php?name=${UNAME}&password=${PSW}`, true);
     xhr.send(null);
   }
 }
