@@ -1,12 +1,13 @@
 <?php
+
 /*******************************************************************************
  * Laboration 2, Kurs: DT161G
  * File: logout.php
  * Desc: Logout page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 // This array holds the links to be displayed when a user has logged out
@@ -40,6 +41,3 @@ session_destroy();
 $responseText = "You are logged out and the session cookie has been destroyed";
 header('Content-Type: application/json');
 echo json_encode($responseText);
-
-?>
-
