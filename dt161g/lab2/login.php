@@ -1,13 +1,12 @@
 <?PHP
-
 /*******************************************************************************
  * Laboration 2, Kurs: DT161G
  * File: login.php
  * Desc: Login page for laboration 2
  *
- * Henrik Henriksson
- * hehe0601
- * hehe0601@student.miun.se
+ * Anders Student
+ * ansu6543
+ * ansu6543@student.miun.se
  ******************************************************************************/
 
 // user_array holds username and password
@@ -40,3 +39,5 @@ $responseText = "Session count is: " . $_SESSION['count'];
 
 header('Content-Type: application/json');
 echo json_encode($responseText);
+
+?>
