@@ -1,18 +1,18 @@
 <?PHP
 
 /*******************************************************************************
- * Laboration 1, Kurs: DT161G
+ * Laboration 2, Kurs: DT161G
  * File: guestbook.php
- * Desc: Guestbook page for laboration 1
+ * Desc: Guestbook page for laboration 2
  *
  * Henrik Henriksson
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
+session_start();
 $title = "Laboration 2";
 
 // Här skall alla server kod skrivas för gästboken.
-session_start();
 date_default_timezone_set('Europe/Stockholm');
 //---------------------------------------------------------------------------
 // Set filename path to the writable folder
@@ -132,6 +132,8 @@ function printToFile(array &$posts, $filename)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" />
     <title>DT161G-Laboration1</title>
+    <!-- dont forget to include the damn script! -->
+    <script src="js/main.js"></script>
 </head>
 
 <body>
@@ -141,23 +143,8 @@ function printToFile(array &$posts, $filename)
     </header>
     <main>
         <aside>
-            <h2>LOGIN</h2>
-            <form action="index.php">
-                <label><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required maxlength="10">
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
-                <button type="submit">Login</button>
-            </form>
-            <h2>MENY</h2>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="index.php">HEM</a>
-                    </li>
-
-                </ul>
-            </nav>
+            <?php require 'includeLogin.php'; ?>
+            <?php require 'includeMenu.php'; ?>
         </aside>
         <section>
             <h2>GÄSTBOK</h2>

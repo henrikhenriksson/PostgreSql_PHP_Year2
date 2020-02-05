@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /*******************************************************************************
  * Laboration 2, Kurs: DT161G
@@ -11,11 +11,6 @@
  ******************************************************************************/
 $title = "Laboration 2";
 session_start();
-
-
-$loggedIn = isset($_SESSION['validLogin']) ? "hide" : "";
-$loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
-
 
 /*******************************************************************************
  * HTML section starts here
@@ -39,45 +34,14 @@ $loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
     </header>
     <main>
         <aside>
-            <div id="login" class="<?php echo $loggedIn; ?>">
-                <h2>LOGIN</h2>
-                <form id="loginForm">
-                    <label><b>Username</b></label>
-                    <input type="text" placeholder="m" name="uname" id="uname" required maxlength="10" value="m" autocomplete="off">
-                    <label><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
-                    <button type="button" id="loginButton">Login</button>
-                </form>
-            </div>
-            <div id="logout" class="<?php echo $loggedOut; ?>">
-                <h2>LOGOUT</h2>
-                <button type="button" id="logoutButton">Logout</button>
-            </div>
-            <h2>MENY</h2>
-            <nav>
-                <ul id="ul">
-                    <?php if (isset($_SESSION['validLogin'])) : ?>
-                        <?php foreach ($_SESSION['sessionLinks'] as $key => $value) : ?>
-                            <li><a href="<?php echo $value; ?>">
-                                    <?php echo $key; ?></a></li>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <li>
-                            <a href="index.php">HEM</a>
-                        </li>
-                        <li>
-                            <a href="guestbook.php">GÄSTBOK</a>
-                        </li>
-
-                    <?php endif; ?>
-                </ul>
-            </nav>
+            <!-- require the incluion of these pages: -->
+            <?php require 'includeLogin.php'; ?>
+            <?php require 'includeMenu.php'; ?>
         </aside>
         <section>
             <h2>VÄLKOMMEN
             </h2>
             <p>Detta är andra laborationen</p>
-            <p id="count"></p>
         </section>
     </main>
     <footer>
