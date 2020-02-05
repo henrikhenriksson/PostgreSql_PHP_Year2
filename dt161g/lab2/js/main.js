@@ -3,9 +3,9 @@
  * File: main.js
  * Desc: main JavaScript file for Laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 var xhr; // Variabel att lagra XMLHttpRequestobjektet
@@ -73,10 +73,24 @@ function processLogin() {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
     var myResponse = JSON.parse(this.responseText);
-    byId('count').innerHTML = myResponse;
+    let myLinks = myResponse['links'];
+
+    addLinks(myLinks);
+
+    byId('count').innerHTML = myResponse['msg'];
     byId('logout').style.display = 'block';
     byId('login').style.display = 'none';
   }
+}
+/*******************************************************************************
+ * Function addLinks
+ ******************************************************************************/
+function addLinks(myLinks) {
+  let linkString = '';
+  for (const key in myLinks) {
+    linkString += `<li><a href='${myLinks[key]}'>${key}</a</li>`;
+  }
+  byId('ul').innerHTML = linkString;
 }
 
 /*******************************************************************************
@@ -87,7 +101,10 @@ function processLogout() {
     //First we most remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogout, false);
     var myResponse = JSON.parse(this.responseText);
-    byId('count').innerHTML = myResponse;
+    let myLinks = myResponse['links'];
+    addLinks(myLinks);
+
+    byId('count').innerHTML = myResponse['msg'];
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
   }
