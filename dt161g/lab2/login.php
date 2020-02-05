@@ -5,9 +5,9 @@
  * File: login.php
  * Desc: Login page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 // user_array holds username and password
@@ -16,7 +16,7 @@ $user_array = array(
     "m" => "m",
     "a" => "a"
 );
-$responseText = "";
+$responseText = [];
 $validUser = false;
 $validPassword = false;
 // Just to show how to iterate through an map array
@@ -32,6 +32,7 @@ foreach ($user_array as $username => $password) {
 }
 
 if ($validUser && $validPassword) {
+    session_start();
 
     // This array holds the links to be displayed when a user has logged in
     $link_array = [
@@ -40,19 +41,21 @@ if ($validUser && $validPassword) {
         "Medlemssida" => "members.php"
     ];
 
+    $_SESSION['validLogin'] = $_GET['name'];
+    $_SESSION['sessionLinks'] = $link_array;
 
     // Example code
-    session_start();
     if (!isset($_SESSION['count'])) {
         $_SESSION['count'] = 1;
     } else {
         $_SESSION['count']++;
     }
-    $responseText = "Welcome valid user. Session count is: " . $_SESSION['count'];
+    $responseText['msg'] = "Welcome valid user {$_GET['name']}. Session count is: " . $_SESSION['count'];
+    $responseText['links'] = $link_array;
 } else if (!$validUser) {
-    $responseText = "Your are not an authorized user!";
+    $responseText['msg'] = "Your are not an authorized user!";
 } else if ($validUser && !$validPassword) {
-    $responseText = "Incorrect Password!";
+    $responseText['msg'] = "Incorrect Password!";
 }
 
 
