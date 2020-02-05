@@ -9,17 +9,14 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-
+$responseText = [];
 // This array holds the links to be displayed when a user has logged out
 $link_array = [
     "Hem" => "index.php",
     "Gästbok" => "guestbook.php",
 ];
 
-
-
 // Initialize the session.
-// If you are using session_name("something"), don't forget it now!
 session_start();
 
 // Unset all of the session variables.
@@ -43,6 +40,7 @@ if (ini_get("session.use_cookies")) {
 // Finally, destroy the session.
 session_destroy();
 
+// set Confirmation message and add links to display to the response.
 $responseText['msg'] = "You are logged out and the session cookie has been destroyed";
 $responseText['links'] = $link_array;
 header('Content-Type: application/json');
