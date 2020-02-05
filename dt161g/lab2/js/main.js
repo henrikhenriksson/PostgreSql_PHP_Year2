@@ -73,22 +73,27 @@ function processLogin() {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
     var myResponse = JSON.parse(this.responseText);
-    let myLinks = myResponse['links'];
 
-    addLinks(myLinks);
-
+    // check wether the login was valid. Only change login/logout button settings if true.
+    if (myResponse['valid']) {
+      // create an array of links based on the links provided in the response.
+      let myLinks = myResponse['links'];
+      addLinks(myLinks);
+      byId('logout').style.display = 'block';
+      byId('login').style.display = 'none';
+    }
+    // print the message
     byId('count').innerHTML = myResponse['msg'];
-    byId('logout').style.display = 'block';
-    byId('login').style.display = 'none';
   }
 }
 /*******************************************************************************
  * Function addLinks
  ******************************************************************************/
 function addLinks(myLinks) {
+  // Loop through the array and add new tags for each element in the myLinks array.
   let linkString = '';
   for (const key in myLinks) {
-    linkString += `<li><a href='${myLinks[key]}'>${key}</a</li>`;
+    linkString += `<li><a href='${myLinks[key]}'>${key.toUpperCase()}</a</li>`;
   }
   byId('ul').innerHTML = linkString;
 }
@@ -104,8 +109,16 @@ function processLogout() {
     let myLinks = myResponse['links'];
     addLinks(myLinks);
 
+    // find current open page.
+    const CURRENT_PAGE = window.location.pathname;
+
     byId('count').innerHTML = myResponse['msg'];
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
+
+    // if the user is on the members page and logged out - redirect to index.
+    if (CURRENT_PAGE.includes('members.php')) {
+      location.replace('index.php');
+    }
   }
 }
