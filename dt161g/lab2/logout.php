@@ -1,17 +1,18 @@
 <?php
+
 /*******************************************************************************
  * Laboration 2, Kurs: DT161G
  * File: logout.php
  * Desc: Logout page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 // This array holds the links to be displayed when a user has logged out
 $link_array = [
-	"Hem" => "index.php",
+    "Hem" => "index.php",
     "Gästbok" => "guestbook.php",
 ];
 
@@ -28,18 +29,21 @@ $_SESSION = array();
 // Note: This will destroy the session, and not just the session data!
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
     );
 }
 
 // Finally, destroy the session.
 session_destroy();
 
-$responseText = "You are logged out and the session cookie has been destroyed";
+$responseText['msg'] = "You are logged out and the session cookie has been destroyed";
+$responseText['links'] = $link_array;
 header('Content-Type: application/json');
 echo json_encode($responseText);
-
-?>
-
