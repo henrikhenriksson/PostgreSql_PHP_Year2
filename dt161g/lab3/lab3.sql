@@ -1,7 +1,7 @@
 -- ##############################################
 -- KURS: DT161G
 -- Laboration 3
--- Johan Timrén
+-- Henrik Henriksson (hehe0601)
 -- Create one schema called dt161g
 -- Create on table called guestbook
 -- ##############################################

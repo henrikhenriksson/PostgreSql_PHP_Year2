@@ -1,12 +1,13 @@
 <?php
+
 /*******************************************************************************
  * Laboration 3, Kurs: DT161G
  * File: util.php
  * Desc: Util file for laboration 3
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 /*******************************************************************************
@@ -30,5 +31,3 @@ if ($debug) {
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 }
-
-?>
