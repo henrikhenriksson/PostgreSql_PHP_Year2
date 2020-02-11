@@ -1,7 +1,7 @@
 <?PHP
 
 /*******************************************************************************
- * Laboration 2, Kurs: DT161G
+ * Laboration 3, Kurs: DT161G
  * File: guestbook.php
  * Desc: Guestbook page for laboration 2
  *
@@ -10,14 +10,13 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
-$title = "Laboration 2";
+$title = "Laboration 3";
 
 // Här skall alla server kod skrivas för gästboken.
 date_default_timezone_set('Europe/Stockholm');
 //---------------------------------------------------------------------------
 // Set filename path to the writable folder
 $filename = __DIR__ . "/../../writeable/posts.json";
-
 // load posts from json file.
 $posts = readFromFile($filename);
 
@@ -25,7 +24,8 @@ $posts = readFromFile($filename);
 //setcookie('HasPosted', "PostedTrue", time() - 3600);
 
 // Generate the random Captcha
-$randCaptcha = generateCaptcha();
+$len = 5;
+$randCaptcha = generateCaptcha(5);
 
 // initialize variables with empty strings.
 $iName = '';
@@ -40,7 +40,7 @@ if (!empty($_POST)) {
         storePosts($posts);
         printToFile($posts, $filename);
         // set cookie, currently set to 5 minutes for testing.
-        setcookie('HasPosted', gethostname(), time() + (60 * 5));
+        setcookie('HasPosted', gethostname());
         // Refresh the Page:
         header("Location: guestbook.php");
     } else {
@@ -58,7 +58,7 @@ $_SESSION["sCap"] = $randCaptcha;
 //---------------------------------------------------------------------------
 
 // this function generates a unique captcha of 5 chars from a selection specified in the seed variable.
-function generateCaptcha()
+function generateCaptcha(int $len)
 {
     // Generate random captcha code:
     $captchaSeed = str_split('abcdefghijklmnopqrstuvwxyz'
@@ -66,7 +66,7 @@ function generateCaptcha()
         . '0123456789');
     $randomized = '';
     // loop through the array, calling rand function on the seed to select 5 values to add to the random captcha
-    foreach (array_rand($captchaSeed, 5) as $key) {
+    foreach (array_rand($captchaSeed, $len) as $key) {
         $randomized .= $captchaSeed[$key];
     }
     return $randomized;
@@ -131,7 +131,7 @@ function printToFile(array &$posts, $filename)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" />
-    <title>DT161G-Laboration1</title>
+    <title>DT161G-<?php echo $title ?></title>
     <!-- dont forget to include the damn script! -->
     <script src="js/main.js"></script>
 </head>
@@ -167,11 +167,9 @@ function printToFile(array &$posts, $filename)
                     </tr>
                 <?php endforeach; ?>
             </table>
-
-
             <!-- Only print the form if the user has not previously posted: -->
             <?php if (!(isset($_COOKIE["HasPosted"]))) : ?>
-                <form action="guestbook.php" method="POST">
+                <form action="guestbook.php" method="POST" id="form" class="<?php echo $loggedout ?>">
                     <fieldset>
                         <legend>Skriv i gästboken</legend>
                         <label>Från: </label>
@@ -188,7 +186,6 @@ function printToFile(array &$posts, $filename)
                     </fieldset>
                 </form>
             <?php endif; ?>
-
         </section>
     </main>
     <footer>

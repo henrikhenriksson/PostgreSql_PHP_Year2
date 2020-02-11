@@ -1,5 +1,5 @@
 <!-- *******************************************************************************
-* Laboration 2, Kurs: DT161G
+* Laboration 3, Kurs: DT161G
 * File: includeMenu.php
 * Desc: Start page for laboration 2
 *

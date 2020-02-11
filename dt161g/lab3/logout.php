@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Laboration 2, Kurs: DT161G
+ * Laboration 3, Kurs: DT161G
  * File: logout.php
  * Desc: Logout page for laboration 2
  *

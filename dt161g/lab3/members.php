@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Laboration 2, Kurs: DT161G
+ * Laboration 3, Kurs: DT161G
  * File: member.php
  * Desc: Member page for laboration 2
  *
@@ -12,14 +12,13 @@
 session_start();
 
 // if no session is active (which it only will be if the user is successfully logged in), redirect the user to the index page.
-if (!($_SESSION['validLogin'])) {
+if (!isset(($_SESSION['validLogin']))) {
     header("Location: index.php"); /* Redirect browser */
     exit;
 } else {
-    $title = "Laboration 2";
+    $title = "Laboration 3";
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="sv-SE">
@@ -27,7 +26,7 @@ if (!($_SESSION['validLogin'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DT161G-Laboration2-member</title>
+    <title>DT161G-<?php echo $title ?>-member</title>
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/main.js"></script>
 </head>

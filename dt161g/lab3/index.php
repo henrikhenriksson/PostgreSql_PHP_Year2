@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Laboration 2, Kurs: DT161G
+ * Laboration 3, Kurs: DT161G
  * File: index.php
  * Desc: Start page for laboration 2
  *
@@ -9,7 +9,7 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-$title = "Laboration 2";
+$title = "Laboration 3";
 session_start();
 
 /*******************************************************************************
