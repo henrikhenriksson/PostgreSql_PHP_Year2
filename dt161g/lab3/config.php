@@ -11,11 +11,8 @@
  ******************************************************************************/
 
 // initiate variables:
-
-$GLOBALS["host"] = "localhost"; // database host path
-$GLOBALS["user"] = "hehe0601";  // User name
-$GLOBALS["captchaLenght"] = 5; // length of the captcha to be generated.
-
-// define("HOST", "localhost", true);
-// define("USER", "hehe0601" true);
-// define("CAPTCHALENGTH", 5, true); // constant holding the length of the captcha to be generated.
+$host = "localhost"; // database host path
+$user = "hehe0601"; // User name
+$debug = true; // set true to use debug mode.
+$captchaLength = "5"; // length of the captcha to be generated.
+$dsn = "";
