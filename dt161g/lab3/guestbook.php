@@ -10,9 +10,8 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
+require_once "util.php"; // Funkar Require_once?
 $title = "Laboration 3";
-
-// Här skall alla server kod skrivas för gästboken.
 date_default_timezone_set('Europe/Stockholm');
 //---------------------------------------------------------------------------
 // Set filename path to the writable folder
@@ -20,12 +19,7 @@ $filename = __DIR__ . "/../../writeable/posts.json";
 // load posts from json file.
 $posts = readFromFile($filename);
 
-// Used for debugging and testing:
-//setcookie('HasPosted', "PostedTrue", time() - 3600);
-
-// Generate the random Captcha
-$len = 5;
-$randCaptcha = generateCaptcha(5);
+$setShoworHide = (!(isset($_COOKIE['hasPosted'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
 
 // initialize variables with empty strings.
 $iName = '';
@@ -40,7 +34,7 @@ if (!empty($_POST)) {
         storePosts($posts);
         printToFile($posts, $filename);
         // set cookie, currently set to 5 minutes for testing.
-        setcookie('HasPosted', gethostname());
+        setcookie('hasPosted', gethostname());
         // Refresh the Page:
         header("Location: guestbook.php");
     } else {
@@ -51,27 +45,12 @@ if (!empty($_POST)) {
     }
 }
 // save the previous captchka
-$_SESSION["sCap"] = $randCaptcha;
+$_SESSION["sCap"] = Captcha::generateCaptcha($config->getCaptchaLength());
 
 //---------------------------------------------------------------------------
 // Function Defenitions:
 //---------------------------------------------------------------------------
 
-// this function generates a unique captcha of 5 chars from a selection specified in the seed variable.
-function generateCaptcha(int $len)
-{
-    // Generate random captcha code:
-    $captchaSeed = str_split('abcdefghijklmnopqrstuvwxyz'
-        . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        . '0123456789');
-    $randomized = '';
-    // loop through the array, calling rand function on the seed to select 5 values to add to the random captcha
-    foreach (array_rand($captchaSeed, $len) as $key) {
-        $randomized .= $captchaSeed[$key];
-    }
-    return $randomized;
-}
-//---------------------------------------------------------------------------
 // store the post to the guestbook array, making sure to reformat any special characters as scripting protection.
 function storePosts(array &$posts)
 {
@@ -84,21 +63,21 @@ function storePosts(array &$posts)
 }
 //---------------------------------------------------------------------------
 // checks for the users ip adress, also attempts to get the correct ip address even if the user has a proxy.
-function getIP()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-    }
-    //whether ip is from proxy
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    //whether ip is from remote address
-    else {
-        $ip_address = $_SERVER['REMOTE_ADDR'];
-    }
-    return $ip_address;
-}
+// function getIP()
+// {
+//     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+//         $ip_address = $_SERVER['HTTP_CLIENT_IP'];
+//     }
+//     //whether ip is from proxy
+//     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+//         $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+//     }
+//     //whether ip is from remote address
+//     else {
+//         $ip_address = $_SERVER['REMOTE_ADDR'];
+//     }
+//     return $ip_address;
+// }
 
 //---------------------------------------------------------------------------
 // Read from file. First checks to make sure the file is readable.
@@ -167,25 +146,23 @@ function printToFile(array &$posts, $filename)
                     </tr>
                 <?php endforeach; ?>
             </table>
-            <!-- Only print the form if the user has not previously posted: -->
-            <?php if (!(isset($_COOKIE["HasPosted"]))) : ?>
-                <form action="guestbook.php" method="POST" id="form" class="<?php echo $loggedout ?>">
-                    <fieldset>
-                        <legend>Skriv i gästboken</legend>
-                        <label>Från: </label>
-                        <input type="text" placeholder="Skriv ditt namn" name="name" value="<?php echo $iName; ?>" required>
-                        <br>
-                        <label for="text">Inlägg</label>
-                        <textarea id="text" name="text" rows="10" cols="50" placeholder="Skriva meddelande här" required><?php echo $iText; ?></textarea>
-                        <br>
-                        <label>Captcha: <span class="red"><?php echo $randCaptcha; ?></span></label>
-                        <input type="text" placeholder="Skriva captcha här" name="captcha" required>
-                        <button type="submit">Skicka</button>
-                        <br>
-                        <h3 class="red"><?php echo $ErrorMessage; ?></h3>
-                    </fieldset>
-                </form>
-            <?php endif; ?>
+
+            <form action="guestbook.php" method="POST" id="form" class="<?php echo $setShoworHide ?>">
+                <fieldset>
+                    <legend>Skriv i gästboken</legend>
+                    <label>Från: </label>
+                    <input type="text" placeholder="Skriv ditt namn" name="name" value="<?php echo $iName; ?>" required>
+                    <br>
+                    <label for="text">Inlägg</label>
+                    <textarea id="text" name="text" rows="10" cols="50" placeholder="Skriva meddelande här" required><?php echo $iText; ?></textarea>
+                    <br>
+                    <label>Captcha: <span class="red"><?php echo $_SESSION['sCap']; ?></span></label>
+                    <input type="text" placeholder="Skriva captcha här" name="captcha" required>
+                    <button type="submit">Skicka</button>
+                    <br>
+                    <h3 class="red"><?php echo $ErrorMessage; ?></h3>
+                </fieldset>
+            </form>
         </section>
     </main>
     <footer>
