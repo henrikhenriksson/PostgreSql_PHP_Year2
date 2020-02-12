@@ -81,7 +81,9 @@ function processLogin() {
       addLinks(myLinks);
       byId('logout').style.display = 'block';
       byId('login').style.display = 'none';
-      byId('form').style.display = 'block';
+      if (CURRENT_PAGE.includes('guestbook.php')) {
+        byId('form').style.display = 'none';
+      }
     }
     // print the message
     byId('count').innerHTML = myResponse['msg'];
@@ -116,7 +118,9 @@ function processLogout() {
     byId('count').innerHTML = myResponse['msg'];
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
-    byId('form').style.display = 'none';
+    if (CURRENT_PAGE.includes('guestbook.php')) {
+      byId('form').style.display = 'none';
+    }
 
     // if the user is on the members page and logged out - redirect to index.
     if (CURRENT_PAGE.includes('members.php')) {
