@@ -11,38 +11,33 @@
  ******************************************************************************/
 
 // require_once "../config.php";
-require_once __DIR__ . "/../config.php";
+
 class Config
 {
-    private $dsn = "";
-    private $debug = true;
-
     public function getDbDsn()
     {
-        return $this->dsn;
+        require __DIR__ . "/../config.php";
+        return $dsn;
     }
 
     public function getCaptchaLength()
     {
-        return $GLOBALS['captchaLenght'];
+        require __DIR__ . "/../config.php";
+        return $captchaLength;
     }
     public function getHost()
     {
-        return $GLOBALS['host'];
+        require __DIR__ . "/../config.php";
+        return $host;
     }
     public function getUser()
     {
-        // global $user;
-        // return $user;
-        // require "../config.php";
-        return $GLOBALS['user'];
+        require __DIR__ . "/../config.php";
+        return $user;
     }
     public function isDebug()
     {
-        return $this->debug;
-    }
-    public function setDebub(Bool $value)
-    {
-        $this->debug = $value;
+        require __DIR__ . "/../config.php";
+        return $debug;
     }
 }
