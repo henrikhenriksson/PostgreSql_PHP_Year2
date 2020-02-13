@@ -14,21 +14,21 @@
  * autoload functions for Classes stored i directory classes
  * All classes must be saved i lower case to work and end whit class.php
  ******************************************************************************/
-function my_autoloader($class)
-{
+// function my_autoloader($class)
+// {
+//     $classfilename = strtolower($class);
+//     require_once 'classes/' . $classfilename . '.class.php';
+// }
+// spl_autoload_register('my_autoloader');
+// Turn the function anonymous as it should be included in all files that passes through the PHP parser.
+spl_autoload_register(function ($class) {
     $classfilename = strtolower($class);
-    require_once 'classes/' . $classfilename . '.class.php';
-}
-spl_autoload_register('my_autoloader');
+    include 'classes/' . $classfilename . '.class.php';
+});
 
-/*******************************************************************************
- * set debug true/false to change php.ini
- * To get more debug information when developing set to true,
- * for production set to false
- ******************************************************************************/
-// $debug = true;
-// require_once("classes/config.class.php");
+// initialize a new config object to be used throughout the project.
 $config = new Config();
+//---------------------------------------------------------------------------
 
 if ($config->isDebug()) {
     error_reporting(E_ALL);
