@@ -10,16 +10,17 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
-require_once "util.php"; // Funkar Require_once?
+require "util.php"; // Funkar Require_once?
 $title = "Laboration 3";
-date_default_timezone_set('Europe/Stockholm');
 //---------------------------------------------------------------------------
-// Set filename path to the writable folder
-$filename = __DIR__ . "/../../writeable/posts.json";
-// load posts from json file.
-$posts = readFromFile($filename);
+// initiate a new database hanlder.
+$dbHandler = new dbHandler();
 
-$setShoworHide = (!(isset($_COOKIE['hasPosted'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
+// Fetch the posts already present in the database.
+$posts = $dbHandler->getPostsFromDatabase();
+
+// determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
+$setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
 
 // initialize variables with empty strings.
 $iName = '';
@@ -31,10 +32,11 @@ if (!empty($_POST)) {
     // check if the entered captcha was valid:
     if ($_POST['captcha'] === $_SESSION["sCap"]) {
         // store the values the user has entered.
-        storePosts($posts);
-        printToFile($posts, $filename);
-        // set cookie, currently set to 5 minutes for testing.
-        setcookie('hasPosted', gethostname());
+        $newPost = new Post($_POST['name'], $_POST['text']);
+        $array = $newPost->getPostArray();
+        $dbHandler->storePostToDatabase($array);
+        // set cookie if post was successfull.
+        setcookie('miunCookie', gethostname());
         // Refresh the Page:
         header("Location: guestbook.php");
     } else {
@@ -48,56 +50,6 @@ if (!empty($_POST)) {
 $_SESSION["sCap"] = Captcha::generateCaptcha($config->getCaptchaLength());
 
 //---------------------------------------------------------------------------
-// Function Defenitions:
-//---------------------------------------------------------------------------
-
-// store the post to the guestbook array, making sure to reformat any special characters as scripting protection.
-function storePosts(array &$posts)
-{
-    $posts[] = [
-        'name' => trim(htmlspecialchars($_POST["name"])),
-        'text' => trim(htmlspecialchars($_POST["text"])),
-        'ip' => getIP(),
-        'time' => date("Y-m-d H:i:s", time())
-    ];
-}
-//---------------------------------------------------------------------------
-// checks for the users ip adress, also attempts to get the correct ip address even if the user has a proxy.
-// function getIP()
-// {
-//     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-//         $ip_address = $_SERVER['HTTP_CLIENT_IP'];
-//     }
-//     //whether ip is from proxy
-//     elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-//         $ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-//     }
-//     //whether ip is from remote address
-//     else {
-//         $ip_address = $_SERVER['REMOTE_ADDR'];
-//     }
-//     return $ip_address;
-// }
-
-//---------------------------------------------------------------------------
-// Read from file. First checks to make sure the file is readable.
-function readFromFile($filename)
-{
-
-    if (is_readable($filename)) {
-        $postsJson = file_get_contents($filename);
-        return json_decode($postsJson, true);
-    } else {
-        return [];
-    }
-}
-//---------------------------------------------------------------------------
-// print the guestbook posts array to file.
-function printToFile(array &$posts, $filename)
-{
-    $postsJson = json_encode($posts);
-    file_put_contents($filename, $postsJson);
-}
 
 /*******************************************************************************
  * HTML section starts here
@@ -139,10 +91,10 @@ function printToFile(array &$posts, $filename)
                 <!-- create a  new table row for each post in the posts array -->
                 <?php foreach ($posts as $key) : ?>
                     <tr>
-                        <td><?php echo $key['name'] ?></td>
-                        <td><?php echo $key['text'] ?> </td>
-                        <td> <?php echo "IP:{$key['ip']}" ?> <br>
-                            <?php echo "Tid: {$key['time']}" ?> </td>
+                        <td><?php echo htmlspecialchars($key->getname()) ?></td>
+                        <td><?php echo htmlspecialchars($key->getMessage()) ?> </td>
+                        <td> <?php echo "IP:{$key->getIP()}" ?> <br>
+                            <?php echo "Tid: {$key->getTime()}" ?> </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
