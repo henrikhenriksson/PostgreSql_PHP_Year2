@@ -10,14 +10,13 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-// require_once "../config.php";
-
 class Config
 {
     public function getDbDsn()
     {
         require __DIR__ . "/../config.php";
-        return $dsn;
+
+        return "host=$host port=$port dbname=$dbName user=$user password=$pass";
     }
 
     public function getCaptchaLength()
