@@ -3,7 +3,7 @@
 /*******************************************************************************
  * Laboration 3, Kurs: DT161G
  * File: config.class.php
- * Desc: Class Config for laboration 3
+ * Desc: Class Config for laboration 3. The class is mainly used to get variables from the config.php file.
  *
  * Henrik Henriksson
  * hehe0601

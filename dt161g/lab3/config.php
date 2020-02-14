@@ -14,9 +14,9 @@
 // server side variables:
 $host = "127.0.0.1"; // database host path
 $port = "5432"; // default port
-$dbName = "hehe0601";
+$dbName = "hehe0601"; // name of the database.
 $user = "hehe0601"; // User name
-$pass = "b0cZeRKbe";
+$pass = "b0cZeRKbe"; // default database password.
 
 $debug = true; // set true to use debug mode.
 $captchaLength = "5"; // length of the captcha to be generated.
