@@ -13,9 +13,10 @@
 
 class Captcha
 {
-    private static $initiated = false;
-    private static $captchaSeed;
+    private static $initiated = false; // used to see if there is an active instance of the class
+    private static $captchaSeed; // the text to be used in the captcha.
 
+    // initializer function for static class.
     private static function init()
     {
         // as the function is static, it will only need to be constructed once.
@@ -27,12 +28,16 @@ class Captcha
         }
     }
 
-    public static function generateCaptcha(int $lenght)
+    // the main static function. Initiates self and returns a random string 
+    public static function generateCaptcha()
     {
+        // get the length from the config file:
+        require __DIR__ . "/../util.php";
+        $len = $config->getCaptchaLength();
         Captcha::init(); // call the init function to set the seed once.
         $randomized = ""; // reset the variable.
 
-        foreach (array_rand(self::$captchaSeed, $lenght) as $key) {
+        foreach (array_rand(self::$captchaSeed, $len) as $key) {
             $randomized .= self::$captchaSeed[$key];
         }
         return $randomized;
