@@ -18,15 +18,18 @@ class Post
     private $iplog = '';
     private $timelog = '';
 
+    // consructor taking 2 or 4 values. When creating a new post, the constructor will assign ip and time manually. When fetching posts from database, these will already exist and be sent as input params.
     public function __construct(string $pName, string $pText, string $pIplog = null, string $pTimelog = null)
     {
         $this->name = trim($pName);
         $this->message = trim($pText);
 
+        // if iplog ocr timelog parameters are !null, set the values (used for  posts loaded from database), else, set them manually for new posts.
         $pIplog ? $this->iplog = $pIplog : $this->iplog = $this->findIP();
         $pTimelog ? $this->timelog = $pTimelog : $this->timelog = date("Y-m-d H:i:s", time());
     }
 
+    // as the databasehandler uses assoc arrays, this function returns the object as an array
     public function getPostArray()
     {
         return [
@@ -37,6 +40,7 @@ class Post
         ];
     }
 
+    // getters
     public function getName()
     {
         return $this->name;
@@ -54,8 +58,7 @@ class Post
         return $this->timelog;
     }
 
-
-
+    // this function checks for the users ip, trying to circumvent attempts to hide IP using vpn or other tools.
     private function findIP()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
