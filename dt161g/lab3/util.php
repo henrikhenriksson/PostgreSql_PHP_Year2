@@ -21,6 +21,16 @@ spl_autoload_register(function ($class) {
 
 // initialize a new config object to be used throughout the project.
 $config = new Config();
+
+// initiate a new database handler.
+$dbHandler = new dbHandler();
+
+// determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
+$setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
+
+$loggedIn = isset($_SESSION['validLogin']) ? "hide" : "";
+$loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
+
 //---------------------------------------------------------------------------
 
 if ($config->isDebug()) {
