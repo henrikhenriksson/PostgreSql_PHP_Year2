@@ -9,8 +9,10 @@
 // * hehe0601
 // * hehe0601@student.miun.se
 ****************************************************************************** */
-require "util.php";
+
 // Check if there is an active session, decides if login should be hidden or not.
+$loggedIn = isset($_SESSION['validLogin']) ? "hide" : "";
+$loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
 
 ?>
 <!-- This page holds tags that should be globally accessible by all pages -->

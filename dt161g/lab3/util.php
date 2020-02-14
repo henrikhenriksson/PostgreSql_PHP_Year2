@@ -16,7 +16,8 @@
  ******************************************************************************/
 spl_autoload_register(function ($class) {
     $classfilename = strtolower($class);
-    include 'classes/' . $classfilename . '.class.php';
+ //   include 'classes/' . $classfilename . '.class.php';
+    require((__DIR__) . "/classes/" . $classfilename . '.class.php');
 });
 
 // initialize a new config object to be used throughout the project.
@@ -27,9 +28,6 @@ $dbHandler = new dbHandler();
 
 // determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
 $setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
-
-$loggedIn = isset($_SESSION['validLogin']) ? "hide" : "";
-$loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
 
 //---------------------------------------------------------------------------
 

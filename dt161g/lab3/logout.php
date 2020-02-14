@@ -9,7 +9,6 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-require "util.php";
 $responseText = [];
 // This array holds the links to be displayed when a user has logged out
 $link_array = [

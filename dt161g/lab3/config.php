@@ -12,7 +12,7 @@
 
 // initiate variables:
 // server side variables:
-$host = "127.0.0.1"; // database host path
+$host = "studentpsql.miun.se"; // database host path
 $port = "5432"; // default port
 $dbName = "hehe0601"; // name of the database.
 $user = "hehe0601"; // User name

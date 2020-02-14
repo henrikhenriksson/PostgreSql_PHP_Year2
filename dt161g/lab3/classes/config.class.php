@@ -21,7 +21,7 @@ class Config
 
     public function getCaptchaLength()
     {
-        require __DIR__ . "/../config.php";
+        require((__DIR__) . "/../config.php");
         return $captchaLength;
     }
     public function getHost()

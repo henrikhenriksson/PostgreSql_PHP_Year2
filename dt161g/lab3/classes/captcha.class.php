@@ -32,7 +32,8 @@ class Captcha
     public static function generateCaptcha()
     {
         // get the length from the config file:
-        require __DIR__ . "/../util.php";
+        require __DIR__ . "/../util.php"; // vilken fungerar?
+        require((__DIR__) . "/../util.php");
         $len = $config->getCaptchaLength();
         Captcha::init(); // call the init function to set the seed once.
         $randomized = ""; // reset the variable.

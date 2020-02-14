@@ -10,9 +10,8 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
-require "util.php";
 // if no session is active (which it only will be if the user is successfully logged in), redirect the user to the index page.
-if (!isset(($_SESSION['validLogin']))) {
+if (!isset($_SESSION['validLogin'])) {
     header("Location: index.php"); /* Redirect browser */
     exit;
 } else {

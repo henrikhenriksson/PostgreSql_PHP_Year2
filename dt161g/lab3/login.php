@@ -9,7 +9,7 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-require "util.php";
+
 // user_array holds username and password
 // There are two users: m with password m and a with password a
 $user_array = array(
