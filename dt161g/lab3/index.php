@@ -9,8 +9,9 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-$title = "Laboration 3";
 session_start();
+require "util.php";
+$title = "Laboration 3";
 
 /*******************************************************************************
  * HTML section starts here
