@@ -10,17 +10,9 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
-require "util.php"; // Funkar Require_once?
+require "util.php";
 $title = "Laboration 3";
 //---------------------------------------------------------------------------
-// initiate a new database hanlder.
-$dbHandler = new dbHandler();
-
-// Fetch the posts already present in the database.
-$posts = $dbHandler->getPostsFromDatabase();
-
-// determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
-$setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
 
 // initialize variables with empty strings.
 $iName = '';
@@ -47,7 +39,7 @@ if (!empty($_POST)) {
     }
 }
 // save the previous captchka
-$_SESSION["sCap"] = Captcha::generateCaptcha($config->getCaptchaLength());
+$_SESSION["sCap"] = Captcha::generateCaptcha();
 
 //---------------------------------------------------------------------------
 
@@ -89,7 +81,7 @@ $_SESSION["sCap"] = Captcha::generateCaptcha($config->getCaptchaLength());
                     </th>
                 </tr>
                 <!-- create a  new table row for each post in the posts array -->
-                <?php foreach ($posts as $key) : ?>
+                <?php foreach ($dbHandler->getPostsFromDatabase() as $key) : ?>
                     <tr>
                         <td><?php echo htmlspecialchars($key->getname()) ?></td>
                         <td><?php echo htmlspecialchars($key->getMessage()) ?> </td>
