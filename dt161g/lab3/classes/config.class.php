@@ -12,31 +12,32 @@
 
 class Config
 {
-    public function getDbDsn()
+    // private variable used to hold the config settings.
+    private $setting;
+
+    // load in the settings as they are when initializing the config class object.
+    public function __construct()
     {
         require __DIR__ . "/../config.php";
+        $this->setting = $confSettings;
+    }
 
-        return "host=$host port=$port dbname=$dbName user=$user password=$pass";
+    public function getDbDsn()
+    {
+
+
+        return "host=" . $this->setting['host'] . " port=" . $this->setting['port'] . " dbname= " . $this->setting['dbName'] . " user=" . $this->setting['user'] . " password=" . $this->setting['pass'];
     }
 
     public function getCaptchaLength()
     {
-        require((__DIR__) . "/../config.php");
-        return $captchaLength;
+
+        return $this->setting['captchaLength'];
     }
-    public function getHost()
-    {
-        require __DIR__ . "/../config.php";
-        return $host;
-    }
-    public function getUser()
-    {
-        require __DIR__ . "/../config.php";
-        return $user;
-    }
+
     public function isDebug()
     {
-        require __DIR__ . "/../config.php";
-        return $debug;
+
+        return $this->setting['debug'];
     }
 }

@@ -12,11 +12,22 @@
 
 // initiate variables:
 // server side variables:
-$host = "studentpsql.miun.se"; // database host path
-$port = "5432"; // default port
-$dbName = "hehe0601"; // name of the database.
-$user = "hehe0601"; // User name
-$pass = "b0cZeRKbe"; // default database password.
+// $host = "studentpsql.miun.se"; // database host path
+// $port = "5432"; // default port
+// $dbName = "hehe0601"; // name of the database.
+// $user = "hehe0601"; // User name
+// $pass = "b0cZeRKbe"; // default database password.
 
-$debug = true; // set true to use debug mode.
-$captchaLength = "5"; // length of the captcha to be generated.
+// $debug = true; // set true to use debug mode.
+// $captchaLength = "5"; // length of the captcha to be generated.
+
+// settings can be changed here:
+$confSettings = [
+    'host' => "studentpsql.miun.se",
+    'port' => "5432",
+    'dbName' => "hehe0601",
+    'user' => "hehe0601",
+    'pass' => "b0cZeRKbe",
+    'debug' => true,
+    'captchaLength' => "5"
+];

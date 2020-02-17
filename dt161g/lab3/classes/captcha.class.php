@@ -15,6 +15,7 @@ class Captcha
 {
     private static $initiated = false; // used to see if there is an active instance of the class
     private static $captchaSeed; // the text to be used in the captcha.
+    private static $len;
 
     // initializer function for static class.
     private static function init()
@@ -25,20 +26,20 @@ class Captcha
             self::$captchaSeed = str_split('abcdefghijklmnopqrstuvwxyz'
                 . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                 . '0123456789');
+            require __DIR__ . "/../util.php";
+            // get the length from the config file:
+            self::$len = $config->getCaptchaLength();
         }
     }
 
     // the main static function. Initiates self and returns a random string 
     public static function generateCaptcha()
     {
-        // get the length from the config file:
-        require __DIR__ . "/../util.php"; // vilken fungerar?
-        require((__DIR__) . "/../util.php");
-        $len = $config->getCaptchaLength();
+
         Captcha::init(); // call the init function to set the seed once.
         $randomized = ""; // reset the variable.
 
-        foreach (array_rand(self::$captchaSeed, $len) as $key) {
+        foreach (array_rand(self::$captchaSeed, self::$len) as $key) {
             $randomized .= self::$captchaSeed[$key];
         }
         return $randomized;

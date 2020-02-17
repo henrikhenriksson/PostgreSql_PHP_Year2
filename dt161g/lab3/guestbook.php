@@ -10,9 +10,14 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 session_start();
-require((__DIR__) . "/util.php");
+require('util.php');
 $title = "Laboration 3";
 //---------------------------------------------------------------------------
+// initiate a new database handler.
+$dbHandler = new dbHandler();
+
+// determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
+$setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
 
 // initialize variables with empty strings.
 $iName = '';

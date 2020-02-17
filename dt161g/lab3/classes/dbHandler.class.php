@@ -14,17 +14,19 @@
 class dbHandler
 {
     private $dbconn;
+    private $dbDsn;
 
     public function __construct()
     {
         $dbconn = null;
+        require __DIR__ . "/../util.php";
+        $this->dbDsn = $config->getDbDsn();
     }
 
     // establish a connection to the server.
     public function connect()
     {
-        require __DIR__ . "/../util.php";
-        $this->dbconn = pg_connect($config->getDbDsn());
+        $this->dbconn = pg_connect($this->dbDsn);
         return $this->dbconn;
     }
     // disconnect from the server.
