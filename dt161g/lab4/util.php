@@ -1,34 +1,29 @@
 <?php
+
 /*******************************************************************************
  * Laboration 4, Kurs: DT161G
  * File: util.php
- * Desc: Util file for laboration 4
+ * Desc: Util file for Laboration 4
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 /*******************************************************************************
  * autoload functions for Classes stored i directory classes
  * All classes must be saved i lower case to work and end whit class.php
  ******************************************************************************/
-function my_autoloader($class) {
+spl_autoload_register(function ($class) {
     $classfilename = strtolower($class);
-    include 'classes/' . $classfilename . '.class.php';
-}
-spl_autoload_register('my_autoloader');
+    include './classes/' . $classfilename . '.class.php';
+    // require((__DIR__) . "/classes/" . $classfilename . '.class.php');
+});
 
-/*******************************************************************************
- * set debug true/false to change php.ini
- * To get more debugg information when developing set to true,
- * for production set to false
- ******************************************************************************/
-$debug = true;
+$config = new Config();
+//---------------------------------------------------------------------------
 
-if ($debug) {
+if ($config->isDebug()) {
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 }
-
-?>
