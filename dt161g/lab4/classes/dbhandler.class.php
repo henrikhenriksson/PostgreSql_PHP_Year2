@@ -108,7 +108,17 @@ class dbHandler
 
             for ($i = 0; $i < pg_num_rows($result); $i++) {
                 $databaseObj = pg_fetch_object($result);
-                $fetchedPost = new Member($databaseObj->id, $databaseObj->username, $databaseObj->password);
+
+                $fetchedPost = new Member(
+                    $databaseObj->id,
+                    $databaseObj->username,
+                    $databaseObj->password
+                );
+
+                $roleArray = $this->getRolesFromDatabase($databaseObj->id);
+
+                $fetchedPost->addRole($roleArray);
+
                 $databaseMembers[] = $fetchedPost;
             }
             pg_free_result($result);
@@ -117,29 +127,24 @@ class dbHandler
         return $databaseMembers;
     }
     //-------------------------------------------------------------------------
-    public function getRolesFromDatabase()
+    private function getRolesFromDatabase($memberId)
     {
-
         $dataBaseRoles = [];
-
-        if ($this->connect()) {
-
-
-            $queryStr = <<<SQL
+        $queryStr = <<<SQL
                 SELECT *
-                FROM dt161g.role;
+                FROM dt161g.role, dt161g.member_role
+                WHERE dt161g.role.id = dt161g.member_role.role_id
+                AND dt161g.member_role.member_id = $memberId;
             SQL;
-            $result = pg_query($this->dbconn, $queryStr);
+        $result = pg_query($this->dbconn, $queryStr);
 
-            for ($i = 0; $i < pg_num_rows($result); $i++) {
-                $databaseObj = pg_fetch_object($result);
-                $fetchedPost = new Role($databaseObj->id, $databaseObj->role, $databaseObj->roletext);
-                $databaseMembers[] = $fetchedPost;
-            }
-            pg_free_result($result);
-            $this->disconnect();
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
+            $databaseObj = pg_fetch_object($result);
+            $fetchedPost = new Role($databaseObj->id, $databaseObj->role, $databaseObj->roletext);
+            $dataBaseRoles[] = $fetchedPost;
         }
-        return $databaseMembers;
+        pg_free_result($result);
+        return $dataBaseRoles;
     }
 }
 //---------------------------------------------------------------------------
