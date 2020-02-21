@@ -14,12 +14,17 @@ class Config
 {
     // private variable used to hold the config settings.
     private $setting;
+    private $memberLinks;
+    private $adminLinks;
+
 
     // load in the settings as they are when initializing the config class object.
     public function __construct()
     {
         require __DIR__ . "/../config.php";
         $this->setting = $confSettings;
+        $this->adminLinks = $admin_link_array;
+        $this->memberLinks = $member_link_array;
     }
 
     public function getDbDsn()
@@ -39,5 +44,21 @@ class Config
     {
 
         return $this->setting['debug'];
+    }
+
+    /**
+     * Get the value of memberLinks
+     */
+    public function getMemberLinks()
+    {
+        return $this->memberLinks;
+    }
+
+    /**
+     * Get the value of adminLinks
+     */
+    public function getAdminLinks()
+    {
+        return $this->adminLinks;
     }
 }
