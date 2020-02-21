@@ -16,6 +16,7 @@ class Member
     private $id;
     private $userName;
     private $password;
+    private $roles;
 
 
     public function __construct(int $pId, string $pUserName, string $pPassword)
@@ -23,6 +24,7 @@ class Member
         $this->id = $pId;
         $this->userName = $pUserName;
         $this->password = $pPassword;
+        $this->roles = [];
     }
 
     /**
@@ -54,5 +56,22 @@ class Member
             'username' => $this->userName,
             'password' => $this->password
         ];
+    }
+
+    public function getRoleArray()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set the value of role
+     *
+     * @return  self
+     */
+    public function addRole(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 }
