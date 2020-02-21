@@ -77,7 +77,6 @@ function processLogin() {
 
     // check wether the login was valid. Only change login/logout button settings if true.
     if (myResponse['valid']) {
-      console.log('Hej!');
       // create an array of links based on the links provided in the response.
       let myLinks = myResponse['links'];
       addLinks(myLinks);
