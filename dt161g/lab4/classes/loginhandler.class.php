@@ -14,22 +14,23 @@
 class LoginHandler
 {
     private $responseText;
+
+    private $linkArray;
     private $validUser;
     private $validPassword;
-    private $databaseUsers;
-    private $linkArray;
-
     private $gotName;
     private $gotPassword;
     private $userArray;
-    private $roleArray;
+    private $currentUser;
 
     public function __construct(string $pGotName, string $pGotPassword)
     {
-        $this->responseText = [];
-        $this->responseText['valid'] = false;
         $this->validUser = false;
         $this->validPassword = false;
+        $this->responseText = [];
+        $this->responseText['valid'] = false;
+
+
         $this->linkArray = [
             "Hem" => "index.php"
         ];
@@ -37,20 +38,61 @@ class LoginHandler
         $this->gotName = $pGotName;
         $this->gotPassword = $pGotPassword;
 
-        require('util.php');
-        $userArray[] = dbHandler::getInstance()->getMembersFromDataBase();
-        $roleArray[] = dbHandler::getInstance()->getRolesFromDatabase();
+        $this->userArray = dbHandler::getInstance()->getMembersFromDataBase();
+        $this->currentUser = $this->getUser();
     }
 
-    public function validateUser()
+    private function getUser()
     {
-
-        setLinkArray();
+        foreach ($this->userArray as $key) {
+            if ($this->gotName === $key->getUserName()) {
+                $this->validUser = true;
+                return $key;
+            }
+        }
+        return null;
     }
 
-    private function setLinkArray()
+    public function validatePassword()
     {
-        echo "hej";
+        if ($this->currentUser != null) {
+            if ($this->currentUser->getPassword() === $this->gotPassword) {
+                $this->validPassword = true;
+                return true;
+            } else {
+                $this->validPassword = false;
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function setLinkArray()
+    {
+        foreach ($this->currentUser->getRoleArray() as $key) {
+            if ($key->getRole() === "member") {
+                $this->linkArray = array_merge($this->linkArray, config::getInstance()->getMemberLinks());
+            }
+            if ($key->getRole() === "admin") {
+                $this->linkArray = array_merge($this->linkArray, config::getInstance()->getAdminLinks());
+            }
+        }
+        return $this->linkArray;
+    }
+
+    public function setResponseText()
+    {
+        if ($this->validUser && $this->validPassword) {
+            $this->responseText['msg'] = "Welcome valid user {$this->gotName}.";
+            $this->responseText['links'] = $this->linkArray;
+            $this->responseText['valid'] = true;
+        } else if (!$this->validUser) {
+            $this->responseText['msg'] = "Your are not an authorized user!";
+        } else if ($this->validUser && !$this->validPassword) {
+            $this->responseText['msg'] = "Incorrect Password!";
+        }
+        return $this->responseText;
     }
 
 
