@@ -28,6 +28,7 @@ class Captcha
                 . '0123456789');
             require __DIR__ . "/../util.php";
             // get the length from the config file:
+            // self::$len = $config->getCaptchaLength();
             self::$len = $config->getCaptchaLength();
         }
     }

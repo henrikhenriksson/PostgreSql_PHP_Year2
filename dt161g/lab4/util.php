@@ -20,7 +20,7 @@ spl_autoload_register(function ($class) {
     // require((__DIR__) . "/classes/" . $classfilename . '.class.php');
 });
 
-$config = new Config();
+$config = Config::getinstance();
 //---------------------------------------------------------------------------
 
 if ($config->isDebug()) {

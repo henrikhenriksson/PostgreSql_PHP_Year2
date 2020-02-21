@@ -9,9 +9,10 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
-
+// Singleton class. Only one instance can exist at the time.
 class Config
 {
+    private static $instance = null;
     // private variable used to hold the config settings.
     private $setting;
     private $memberLinks;
@@ -19,12 +20,20 @@ class Config
 
 
     // load in the settings as they are when initializing the config class object.
-    public function __construct()
+    private function __construct()
     {
         require __DIR__ . "/../config.php";
         $this->setting = $confSettings;
         $this->adminLinks = $admin_link_array;
         $this->memberLinks = $member_link_array;
+    }
+
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new Config();
+        }
+        return self::$instance;
     }
 
     public function getDbDsn()
