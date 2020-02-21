@@ -12,7 +12,7 @@
 
 // settings can be changed here:
 $confSettings = [
-    'host' => "studentpsql.miun.se",
+    'host' => "127.0.0.1",
     'port' => "5432",
     'dbName' => "hehe0601",
     'user' => "hehe0601",
