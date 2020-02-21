@@ -13,4 +13,30 @@
 
 class Role
 {
+    private $id;
+    private $role;
+    private $roleText;
+
+    private function __construct(int $pId, string $pRole, string $pRoleText)
+    {
+        $this->id = $pId;
+        $this->role = $pRole;
+        $this->roleText = $pRoleText;
+    }
+
+    /**
+     * Get the value of role
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Get the value of roleText
+     */
+    public function getRoleText()
+    {
+        return $this->roleText;
+    }
 }

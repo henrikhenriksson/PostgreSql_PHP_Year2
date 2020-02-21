@@ -14,7 +14,7 @@ require('util.php');
 $title = "Laboration 4";
 //---------------------------------------------------------------------------
 // initiate a new database handler.
-$dbHandler = new dbHandler();
+$dbHandler = dbHandler::getInstance();
 
 // determine wether or not the user is logged in, or if a cookie is set. Only valid users that are logged in should be able to post more than once.
 $setShoworHide = (!(isset($_COOKIE['miunCookie'])) || isset($_SESSION['validLogin'])) ? "" : "hide";
