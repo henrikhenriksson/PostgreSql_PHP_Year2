@@ -10,33 +10,49 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-// this class is responsible for handling requests to the database.
+// This Singleton class is responsible for handling requests to the database.
+// 
 class dbHandler
 {
+    private static $instance = null;
     private $dbconn;
     private $dbDsn;
 
-    public function __construct()
+    private function __construct()
     {
         $dbconn = null;
         require __DIR__ . "/../util.php";
         $this->dbDsn = $config->getDbDsn();
     }
 
+
+
     // establish a connection to the server.
-    public function connect()
+    private function connect()
     {
         $this->dbconn = pg_connect($this->dbDsn);
         return $this->dbconn;
     }
     // disconnect from the server.
-    public function disconnect()
+    private function disconnect()
     {
         pg_close($this->dbconn);
     }
 
+    //-------------------------------------------------------------------------
+    // Public functions:
+    //-------------------------------------------------------------------------
+
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new dbHandler();
+        }
+        return self::$instance;
+    }
+
     // Store a post to the database.
-    function storePostToDatabase(array $post)
+    public function storePostToDatabase(array $post)
     {
         if ($this->connect()) {
 
@@ -56,7 +72,7 @@ class dbHandler
 
     // Load the posts from the database to print on the website.
     // returns a Post[]
-    function getPostsFromDatabase()
+    public function getPostsFromDatabase()
     {
 
         $databasePosts = [];
@@ -79,4 +95,51 @@ class dbHandler
         }
         return $databasePosts;
     }
+    //-------------------------------------------------------------------------
+    public function getMembersFromDataBase()
+    {
+
+        $dataBaseMembers = [];
+
+        if ($this->connect()) {
+
+            $queryStr = "SELECT * FROM dt161g.member";
+            $result = pg_query($this->dbconn, $queryStr);
+
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
+                $databaseObj = pg_fetch_object($result);
+                $fetchedPost = new Member($databaseObj->id, $databaseObj->username, $databaseObj->password);
+                $databaseMembers[] = $fetchedPost;
+            }
+            pg_free_result($result);
+            $this->disconnect();
+        }
+        return $databaseMembers;
+    }
+    //-------------------------------------------------------------------------
+    public function getRolesFromDatabase()
+    {
+
+        $dataBaseRoles = [];
+
+        if ($this->connect()) {
+
+
+            $queryStr = <<<SQL
+                SELECT *
+                FROM dt161g.role;
+            SQL;
+            $result = pg_query($this->dbconn, $queryStr);
+
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
+                $databaseObj = pg_fetch_object($result);
+                $fetchedPost = new Role($databaseObj->id, $databaseObj->role, $databaseObj->roletext);
+                $databaseMembers[] = $fetchedPost;
+            }
+            pg_free_result($result);
+            $this->disconnect();
+        }
+        return $databaseMembers;
+    }
 }
+//---------------------------------------------------------------------------
