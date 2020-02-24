@@ -124,7 +124,7 @@ function processLogout() {
     }
 
     // if the user is on the members page and logged out - redirect to index.
-    if (CURRENT_PAGE.includes('members.php')) {
+    if (CURRENT_PAGE.includes('members.php') || CURRENT_PAGE.includes('admin.php')) {
       location.replace('index.php');
     }
   }
