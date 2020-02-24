@@ -21,6 +21,8 @@ if ($login->validatePassword()) {
     $_SESSION['validLogin'] = $_GET['name'];
     // Add the links to a link array, used to make sure the menu items persists across page refreshes.
     $_SESSION['sessionLinks'] = $login->setLinkArray();
+
+    $_SESSION['isAdmin'] = $login->getisAdmin();
 }
 
 $responseText = $login->setResponseText();
