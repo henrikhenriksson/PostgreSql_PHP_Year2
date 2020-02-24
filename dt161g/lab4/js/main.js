@@ -72,6 +72,7 @@ function processLogin() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
+    console.log(this.responseText);
     var myResponse = JSON.parse(this.responseText);
     const CURRENT_PAGE = window.location.pathname;
 
@@ -124,7 +125,10 @@ function processLogout() {
     }
 
     // if the user is on the members page and logged out - redirect to index.
-    if (CURRENT_PAGE.includes('members.php') || CURRENT_PAGE.includes('admin.php')) {
+    if (
+      CURRENT_PAGE.includes('members.php') ||
+      CURRENT_PAGE.includes('admin.php')
+    ) {
       location.replace('index.php');
     }
   }

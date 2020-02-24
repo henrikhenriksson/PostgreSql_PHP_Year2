@@ -74,18 +74,10 @@ class dbHandler
     // returns a Post[]
     public function getPostsFromDatabase()
     {
-
         $databasePosts = [];
 
         if ($this->connect()) {
-
-             $queryStr = "SELECT * FROM dt161g.guestbook;";
-
-// $queryStr = <<<SQL
-// SELECT *
-// FROM dt161g.guestbook;
-// SQL;
-
+            $queryStr = "SELECT * FROM dt161g.guestbook;";
             $result = pg_query($this->dbconn, $queryStr);
 
             // the query fetches an object, which is then inserted into a Post class object that is then added to an array of Post objects.
@@ -105,12 +97,7 @@ class dbHandler
     public function getMembersFromDataBase()
     {
         if ($this->connect()) {
-
-            $queryStr = <<<SQL
-            SELECT * 
-            FROM dt161g.member;
-            SQL;
-
+            $queryStr = "SELECT * FROM dt161g.member;";
             $result = pg_query($this->dbconn, $queryStr);
 
             if ($result) {
@@ -146,12 +133,14 @@ class dbHandler
     private function getRolesFromDatabase($memberId)
     {
         $dataBaseRoles = [];
-        $queryStr = <<<SQL
-                SELECT *
-                FROM dt161g.role, dt161g.member_role
-                WHERE dt161g.role.id = dt161g.member_role.role_id
-                AND dt161g.member_role.member_id = $memberId;
-            SQL;
+        // $queryStr = <<<SQL
+        //         SELECT *
+        //         FROM dt161g.role, dt161g.member_role
+        //         WHERE dt161g.role.id = dt161g.member_role.role_id
+        //         AND dt161g.member_role.member_id = $memberId;
+        //     SQL;
+
+        $queryStr = "SELECT * FROM dt161g.role, dt161g.member_role WHERE dt161g.role.id = dt161g.member_role.role_id AND dt161g.member_role.member_id = {$memberId}";
 
         $result = pg_query($this->dbconn, $queryStr);
 
