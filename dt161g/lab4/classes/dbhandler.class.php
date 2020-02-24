@@ -79,7 +79,13 @@ class dbHandler
 
         if ($this->connect()) {
 
-            $queryStr = "SELECT * FROM dt161g.guestbook;";
+             $queryStr = "SELECT * FROM dt161g.guestbook;";
+
+// $queryStr = <<<SQL
+// SELECT *
+// FROM dt161g.guestbook;
+// SQL;
+
             $result = pg_query($this->dbconn, $queryStr);
 
             // the query fetches an object, which is then inserted into a Post class object that is then added to an array of Post objects.
@@ -98,35 +104,45 @@ class dbHandler
     //-------------------------------------------------------------------------
     public function getMembersFromDataBase()
     {
-
-        $dataBaseMembers = [];
-
         if ($this->connect()) {
 
-            $queryStr = "SELECT * FROM dt161g.member";
+            $queryStr = <<<SQL
+            SELECT * 
+            FROM dt161g.member;
+            SQL;
+
             $result = pg_query($this->dbconn, $queryStr);
 
-            for ($i = 0; $i < pg_num_rows($result); $i++) {
-                $databaseObj = pg_fetch_object($result);
+            if ($result) {
 
-                $fetchedPost = new Member(
-                    $databaseObj->id,
-                    $databaseObj->username,
-                    $databaseObj->password
-                );
-
-                $roleArray = $this->getRolesFromDatabase($databaseObj->id);
-
-                $fetchedPost->addRole($roleArray);
-
-                $databaseMembers[] = $fetchedPost;
+                for ($i = 0; $i < pg_num_rows($result); $i++) {
+                    // fetch the result to a standard object.
+                    $databaseObj = pg_fetch_object($result);
+                    // Use the standard object values to create a new member object
+                    $fetchedMember = new Member(
+                        $databaseObj->id,
+                        $databaseObj->username,
+                        $databaseObj->password
+                    );
+                    // fetch the roles attached to the current iteration id number:
+                    $roleArray = $this->getRolesFromDatabase($databaseObj->id);
+                    // append the roles to the member object.
+                    $fetchedMember->addRole($roleArray);
+                    // add the Member object to array holding members.
+                    $databaseMembers[] = $fetchedMember;
+                }
+                // free the results.
+                pg_free_result($result);
+                $this->disconnect();
             }
-            pg_free_result($result);
-            $this->disconnect();
+            //return the member array.
+            return $databaseMembers;
+        } else {
+            return null;
         }
-        return $databaseMembers;
     }
     //-------------------------------------------------------------------------
+    // This function returns an array of Roles attached to a parameter id
     private function getRolesFromDatabase($memberId)
     {
         $dataBaseRoles = [];
@@ -136,6 +152,7 @@ class dbHandler
                 WHERE dt161g.role.id = dt161g.member_role.role_id
                 AND dt161g.member_role.member_id = $memberId;
             SQL;
+
         $result = pg_query($this->dbconn, $queryStr);
 
         for ($i = 0; $i < pg_num_rows($result); $i++) {

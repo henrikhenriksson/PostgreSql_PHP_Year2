@@ -29,8 +29,6 @@ class LoginHandler
         $this->validPassword = false;
         $this->responseText = [];
         $this->responseText['valid'] = false;
-
-
         $this->linkArray = [
             "Hem" => "index.php"
         ];
@@ -66,6 +64,16 @@ class LoginHandler
         } else {
             return false;
         }
+    }
+
+    public function getisAdmin() {
+        foreach ($this->currentUser->getRoleArray() as $key) {
+            if ($key->getRole() === "admin") {
+               return true;
+           
+            }
+        }
+        return false;
     }
 
     public function setLinkArray()
