@@ -1,4 +1,5 @@
 <?PHP
+
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: index.php
@@ -8,35 +9,44 @@
  * ansu6543
  * ansu6543@student.miun.se
  ******************************************************************************/
-$title = "DT161G - Projekt"
+$title = "DT161G - Projekt";
 
 /*******************************************************************************
  * HTML section starts here
  ******************************************************************************/
+session_start();
+require('util.php');
 ?>
+
 <!DOCTYPE html>
 <html lang="sv-SE">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?></title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <title>DT161G-<?php echo $title ?></title>
+    <link rel="stylesheet" href="css/style.css" />
     <script src="js/main.js"></script>
 </head>
+
 <body>
-
-<header>
-    <h1><?php echo $title ?></h1>
-</header>
-
-<main>
-    <a href="images.php?user=test">Länk för användare test till bildsidan</a>
-    <p>Länkens url blir då<br>
-        images.php?user=test</p>
-</main>
-
-<footer>
-</footer>
-
+    <header>
+        <img src="img/mittuniversitetet.jpg" alt="miun logga" class="logo" />
+        <h1><?php echo $title ?></h1>
+        <?php require 'includeLogin.php'; ?>
+    </header>
+    <main>
+        <aside>
+            <!-- require the incluion of these pages: -->
+            <?php require 'includeUsers.php'; ?>
+        </aside>
+        <section>
+            <?php require 'includeWelcome.php' ?>
+        </section>
+    </main>
+    <footer>
+        <?php require 'includeFooter.php' ?>
+    </footer>
 </body>
+
 </html>

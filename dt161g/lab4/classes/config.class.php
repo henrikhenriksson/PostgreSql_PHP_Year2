@@ -43,12 +43,6 @@ class Config
         return "host=" . $this->setting['host'] . " port=" . $this->setting['port'] . " dbname= " . $this->setting['dbName'] . " user=" . $this->setting['user'] . " password=" . $this->setting['pass'];
     }
 
-    public function getCaptchaLength()
-    {
-
-        return $this->setting['captchaLength'];
-    }
-
     public function isDebug()
     {
 

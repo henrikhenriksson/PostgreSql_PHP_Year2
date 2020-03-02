@@ -1,4 +1,5 @@
 <?PHP
+
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: images.php
@@ -20,25 +21,30 @@ if (isset($_GET["user"])) {
 ?>
 <!DOCTYPE html>
 <html lang="sv-SE">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $title ?></title>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/style.css" />
     <script src="js/main.js"></script>
 </head>
+
 <body>
 
-<header>
-    <h1><?php echo $title ?></h1>
-    för användare: <?php echo $username ?>
-</header>
+    <header>
+        <h1><?php echo $title ?></h1>
+        <p>
+            Personlig sida för användare: <?php echo $username ?>
+        </p>
+    </header>
 
-<main>
-</main>
+    <main>
+    </main>
 
-<footer>
-</footer>
+    <footer>
+    </footer>
 
 </body>
+
 </html>
