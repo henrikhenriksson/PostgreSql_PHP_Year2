@@ -11,7 +11,7 @@
  ******************************************************************************/
 session_start();
 // if no session is active (which it only will be if the user is successfully logged in), redirect the user to the index page.
-if (!isset($_SESSION['isAdmin'])) {
+if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] == true) {
     header("Location: index.php"); /* Redirect browser */
     exit;
 } else {
@@ -41,7 +41,7 @@ if (!isset($_SESSION['isAdmin'])) {
             <?php require 'includeMenu.php'; ?>
         </aside>
         <section>
-            <h2>Medlemssida</h2>
+            <h2>Adminsida</h2>
             <p>Denna sida skall bara kunna ses av inloggade administratörer</p>
         </section>
     </main>

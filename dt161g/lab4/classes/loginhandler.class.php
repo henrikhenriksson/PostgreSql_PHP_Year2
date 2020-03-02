@@ -70,7 +70,6 @@ class LoginHandler
         foreach ($this->currentUser->getRoleArray() as $key) {
             if ($key->getRole() === "admin") {
                return true;
-           
             }
         }
         return false;
