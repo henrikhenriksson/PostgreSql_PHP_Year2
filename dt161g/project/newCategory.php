@@ -14,7 +14,6 @@ $responseText = [];
 
 $currentUser = "";
 
-
 if ($_GET['name']) {
     session_start();
 
@@ -22,7 +21,11 @@ if ($_GET['name']) {
         $currentUser = $_SESSION['validLogin'];
     }
 
-    // Get all existing categories for specific user from database -
+    // Get all existing categories for specific user from database.
+
+    // Check for existing Categories.
+
+    // Add the Category to the user Database.
 
 }
 

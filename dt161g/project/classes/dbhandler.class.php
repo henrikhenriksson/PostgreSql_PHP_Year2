@@ -49,6 +49,15 @@ class dbHandler
         return self::$instance;
     }
 
+
+    // public function getCategoriesForUser()
+    // {
+
+    //     if ($this->connect()) {
+    //         $queryStr = "SELECT * FROM dt161g_Project.category;";
+    //     }
+    // }
+
     // Store a post to the database.
     public function storePostToDatabase(array $post)
     {

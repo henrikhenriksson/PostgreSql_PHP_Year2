@@ -10,8 +10,10 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 $responseText = [];
-$target_dir = __DIR__ . "/../../writeable/test/";
+//$target_dir = __DIR__ . "/../../writeable/test/";
 $validUpload = true;
+
+
 
 $validFileTypes = [
     "gif", "jpeg", "jpg", "png"
@@ -19,6 +21,17 @@ $validFileTypes = [
 
 // check for valid upload:
 if (isset($_FILES['file'])) {
+    session_start();
+    if (isset($_SESSION['validLogin'])) {
+        $currentUser = $_SESSION['validLogin'];
+        $target_dir = __DIR__ . "/../../writeable/test/{$currentUser}/{$_POST['category']}/";
+    }
+
+    if (file_exists($target_dir)) {
+    } else {
+        mkdir($target_dir, 0777, true);
+    }
+
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
     $imgFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $checkValid = getimagesize($_FILES['file']["tmp_name"]);
