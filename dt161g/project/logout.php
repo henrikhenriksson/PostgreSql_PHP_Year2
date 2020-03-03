@@ -1,4 +1,5 @@
 <?php
+
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: logout.php
@@ -13,7 +14,6 @@ $responseText = [];
 // This array holds the links to be displayed when a user has logged out
 $link_array = [
     "Hem" => "index.php",
-    "Gästbok" => "guestbook.php",
 ];
 
 // Initialize the session.

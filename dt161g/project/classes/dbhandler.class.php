@@ -25,8 +25,6 @@ class dbHandler
         $this->dbDsn = $config->getDbDsn();
     }
 
-
-
     // establish a connection to the server.
     private function connect()
     {
@@ -68,30 +66,6 @@ class dbHandler
             }
             $this->disconnect();
         }
-    }
-
-    // Load the posts from the database to print on the website.
-    // returns a Post[]
-    public function getPostsFromDatabase()
-    {
-        $databasePosts = [];
-
-        if ($this->connect()) {
-            $queryStr = "SELECT * FROM dt161g.guestbook;";
-            $result = pg_query($this->dbconn, $queryStr);
-
-            // the query fetches an object, which is then inserted into a Post class object that is then added to an array of Post objects.
-            for ($i = 0; $i < pg_num_rows($result); $i++) {
-                $databaseObj = pg_fetch_object($result);
-                $fetchedPost = new Post($databaseObj->name, $databaseObj->message, $databaseObj->iplog, $databaseObj->timelog);
-
-                $databasePosts[] = $fetchedPost;
-            }
-            // free the resources.
-            pg_free_result($result);
-            $this->disconnect();
-        }
-        return $databasePosts;
     }
     //-------------------------------------------------------------------------
     public function getMembersFromDataBase()

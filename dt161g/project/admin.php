@@ -12,7 +12,7 @@
 session_start();
 require('util.php');
 // if no session is active (which it only will be if the user is successfully logged in), redirect the user to the index page.
-if (!isset($_SESSION['isAdmin'])) {
+if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
     header("Location: index.php"); /* Redirect browser */
     exit;
 } else {

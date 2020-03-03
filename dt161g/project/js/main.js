@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: main.js
- * Desc: main JavaScript file for Projekt
+ * Desc: main JavaScript file for Project
  *
  * Henrik Henriksson
  * hehe0601
@@ -24,6 +24,13 @@ function main() {
   byId('loginButton').addEventListener('click', doLogin, false);
   byId('logoutButton').addEventListener('click', doLogout, false);
 
+  const CURRENT_PAGE = window.location.pathname;
+
+  if (CURRENT_PAGE.includes('userpage.php')) {
+    byId('categoryButton').addEventListener('click', doAddCategory, false);
+    byId('uploadButton').addEventListener('click', doUpload, false);
+  }
+
   // Stöd för IE7+, Firefox, Chrome, Opera, Safari
   try {
     if (window.XMLHttpRequest) {
@@ -40,6 +47,37 @@ function main() {
   }
 }
 window.addEventListener('load', main, false); // Connect the main function to window load event
+/*******************************************************************************
+ * Function doUpload
+ ******************************************************************************/
+function doUpload() {
+  let fileInput = byId('fileToUpload');
+  let file = fileInput.files[0];
+
+  let formData = new FormData();
+  formData.append('file', file);
+  formData.append('username', 'test1');
+  formData.append('category', 'test');
+
+  if (formdata != '') {
+    xhr.addEventListener('readystatechange', processUpload, false);
+    xhr.open('POST', `upload.php`, true);
+    xhr.send(formData);
+  }
+}
+/*******************************************************************************
+ * Function doAddCategory
+ ******************************************************************************/
+function doAddCategory() {
+  let catToAdd = byId('newCategory').value;
+  console.log(catToAdd);
+
+  if (byId('newCategory').value != '') {
+    xhr.addEventListener('readystatechange', processCategory, false);
+    xhr.open('GET', `newCategory.php?name=${catToAdd}`, true);
+    xhr.send(null);
+  }
+}
 
 /*******************************************************************************
  * Function doLogin
@@ -63,7 +101,28 @@ function doLogout() {
   xhr.open('GET', 'logout.php', true);
   xhr.send(null);
 }
+/*******************************************************************************
+ * Function processCategory
+ ******************************************************************************/
+function processCategory() {
+  if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    xhr.removeEventListener('readystatechange', processCategory, false);
+    let myResponse = JSON.parse(this.responseText);
+    byId('categoryStatus').innerHTML = myResponse['msg'];
+  }
+}
+/*******************************************************************************
+ * Function processUpload
+ ******************************************************************************/
+function processUpload() {
+  if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    //First we must remove the registered event since we use the same xhr object for login and logout
+    xhr.removeEventListener('readystatechange', processUpload, false);
+    let myResponse = JSON.parse(this.responseText);
 
+    byId('uploadStatus').innerHTML = myResponse['msg'];
+  }
+}
 /*******************************************************************************
  * Function processLogin
  ******************************************************************************/
@@ -71,7 +130,6 @@ function processLogin() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
-    console.log(this.responseText);
 
     var myResponse = JSON.parse(this.responseText);
     const CURRENT_PAGE = window.location.pathname;
@@ -83,9 +141,6 @@ function processLogin() {
       addLinks(myLinks);
       byId('logout').style.display = 'block';
       byId('login').style.display = 'none';
-      if (CURRENT_PAGE.includes('guestbook.php')) {
-        byId('form').style.display = 'none';
-      }
     }
     // print the message
     byId('count').innerHTML = myResponse['msg'];

@@ -5,16 +5,26 @@
  * File: images.php
  * Desc: Image page for Projekt
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson 
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
-$title = "DT161G - Projekt - Bildsida";
-$username = "No User is set!";
-if (isset($_GET["user"])) {
-    $username = $_GET["user"];
-}
+session_start();
+require('util.php');
 
+$title = "DT161G - Bildsida";
+$username = "No User is set!";
+$valid = false;
+$users = dbHandler::getInstance()->getMembersFromDataBase();
+
+if (isset($_GET["user"])) {
+    $username = "Invalid User!";
+    foreach ($users as $key) {
+        if ($key->getUserName() === $_GET["user"]) {
+            $username = $_GET["user"];
+        }
+    }
+}
 /*******************************************************************************
  * HTML section starts here
  ******************************************************************************/

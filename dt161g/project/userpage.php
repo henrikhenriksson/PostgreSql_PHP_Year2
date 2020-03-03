@@ -16,6 +16,7 @@ require('util.php');
  * HTML section starts here
  ******************************************************************************/
 
+
 if (!isset($_SESSION['validLogin'])) {
     header("Location: index.php"); /* Redirect browser */
     exit;
@@ -55,6 +56,7 @@ if (!isset($_SESSION['validLogin'])) {
                 Det skall också gå att skapa nya kategorier på denna sida.<br>
                 På denna sida skall man också kunna ladda upp bilder och välja vilken kategori som bilden skall hamna i.
             </p>
+            <?php require "includeUpload.php" ?>
         </section>
     </main>
 
