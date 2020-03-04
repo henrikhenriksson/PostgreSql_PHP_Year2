@@ -54,19 +54,19 @@ VALUES
 INSERT INTO dt161G_Project.member_role (member_id, role_id)
 VALUES
   (2, 2);
--- Create the Image table:
-  DROP TABLE IF EXISTS dt161G_Project.images;
-CREATE TABLE dt161G_Project.images (
-    id SERIAL PRIMARY KEY,
-    img_name text NOT NULL CHECK (img_Name <> ''),
-    category_id text references dt161G_Project.category(id),
-    CONSTRAINT unique_img_category UNIQUE(img_name, category_id)
-  ) WITHOUT OIDS;
 -- Create the Categories table.
-  DROP TABLE IF EXISTS dt161G_Project.category;
+  DROP TABLE IF EXISTS dt161G_Project.category CASCADE;
 CREATE TABLE dt161G_Project.category (
     id SERIAL PRIMARY KEY,
     category_name text NOT NULL CHECK (category_name <> ''),
     member_id INTEGER REFERENCES dt161G_Project.member(id),
     CONSTRAINT unique_category_member UNIQUE(category_name, member_id)
-  ) WITHOUT OIDS
+  ) WITHOUT OIDS;
+-- Create the Image table:
+  DROP TABLE IF EXISTS dt161G_Project.images CASCADE;
+CREATE TABLE dt161G_Project.images (
+    id SERIAL PRIMARY KEY,
+    img_name text NOT NULL CHECK (img_Name <> ''),
+    category_id INTEGER references dt161G_Project.category(id),
+    CONSTRAINT unique_img_category UNIQUE(img_name, category_id)
+  ) WITHOUT OIDS;

@@ -19,6 +19,16 @@ $confSettings = [
     'user' => "hehe0601",
     'pass' => "b0cZeRKbe",
     'debug' => true,
+    'targetdir' => __DIR__ . "\\..\\..\\writeable\\",
+    'validFileTypes' => [
+        "gif", "jpeg", "jpg", "png"
+    ],
+    'memberLinkArray' => [
+        "Medlemssida" => "userpage.php"
+    ],
+    'adminLinkArray' => [
+        "AdminSida" => "admin.php"
+    ]
 ];
 // This array holds the links to be displayed when a member has logged in
 $member_link_array = [
@@ -28,3 +38,7 @@ $member_link_array = [
 $admin_link_array = [
     "Adminsida" => "admin.php"
 ];
+// // This array holds valid file types for image uploads.
+// $validFileTypes = [
+//     "gif", "jpeg", "jpg", "png"
+// ];

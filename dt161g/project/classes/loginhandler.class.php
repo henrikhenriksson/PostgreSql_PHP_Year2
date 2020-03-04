@@ -80,6 +80,7 @@ class LoginHandler
 
     public function setLinkArray()
     {
+        // $linkArray = [];
         foreach ($this->currentUser->getRoleArray() as $key) {
             if ($key->getRole() === "member") {
                 $this->linkArray = array_merge($this->linkArray, config::getInstance()->getMemberLinks());

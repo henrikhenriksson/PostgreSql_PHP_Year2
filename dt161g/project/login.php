@@ -26,6 +26,6 @@ if ($login->validatePassword()) {
     $_SESSION['isAdmin'] = $login->getisAdmin();
 }
 
-$responseText = $login->setResponseText();
+//$responseText = $login->setResponseText();
 
 $login->sendReply();

@@ -132,6 +132,7 @@ function processLogin() {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
 
+    console.log(this.responseText);
     var myResponse = JSON.parse(this.responseText);
     const CURRENT_PAGE = window.location.pathname;
 

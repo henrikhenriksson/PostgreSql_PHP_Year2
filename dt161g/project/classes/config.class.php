@@ -19,7 +19,6 @@ class Config
     private $memberLinks;
     private $adminLinks;
 
-
     // load in the settings as they are when initializing the config class object.
     private function __construct()
     {
@@ -37,6 +36,16 @@ class Config
         return self::$instance;
     }
 
+    public function getTargetDir()
+    {
+        return $this->setting['targetdir'];
+    }
+
+    public function getFileTypes()
+    {
+        return $this->setting['validFileTypes'];
+    }
+
     public function getDbDsn()
     {
 
@@ -52,6 +61,21 @@ class Config
     /**
      * Get the value of memberLinks
      */
+    // public function getMemberLinks()
+    // {
+    //     return $this->settings['memberLinkArray'];
+    // }
+
+    // /**
+    //  * Get the value of adminLinks
+    //  */
+    // public function getAdminLinks()
+    // {
+    //     return $this->settings['adminLinkArray'];
+    // }
+    // 
+    //   Get the value of memberLinks
+
     public function getMemberLinks()
     {
         return $this->memberLinks;
