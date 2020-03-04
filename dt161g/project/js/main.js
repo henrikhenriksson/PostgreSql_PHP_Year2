@@ -70,7 +70,6 @@ function doUpload() {
  ******************************************************************************/
 function doAddCategory() {
   let catToAdd = byId('newCategory').value;
-  console.log(catToAdd);
 
   if (byId('newCategory').value != '') {
     xhr.addEventListener('readystatechange', processCategory, false);
@@ -107,6 +106,7 @@ function doLogout() {
 function processCategory() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     xhr.removeEventListener('readystatechange', processCategory, false);
+    console.log(this.responseText);
     let myResponse = JSON.parse(this.responseText);
     byId('categoryStatus').innerHTML = myResponse['msg'];
   }

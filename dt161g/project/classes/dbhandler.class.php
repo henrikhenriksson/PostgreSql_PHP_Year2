@@ -49,13 +49,67 @@ class dbHandler
         return self::$instance;
     }
 
-    // public function getCategoriesForUser()
-    // {
+    public function addNewCategory($name, $memberid)
+    {
+        if ($this->connect()) {
+            $queryStr = "INSERT INTO dt161g_project.category (category_name, member_id) VALUES($1,$2)";
 
-    //     if ($this->connect()) {
-    //         $queryStr = "SELECT * FROM dt161g_Project.category;";
-    //     }
-    // }
+            $result = pg_query_params($this->dbconn, $queryStr, array($name, $memberid));
+
+            if (!$result) {
+                echo "Error sending request: <br>\n";
+                pg_last_error($this->dbconn);
+            }
+            $this->disconnect();
+        }
+    }
+    //---------------------------------------------------------------------------
+    public function getCategoriesForUser($memberId)
+    {
+        $databaseCategories = [];
+
+        $queryStr = "SELECT * FROM dt161g_project.category WHERE member_id = {$memberId};";
+
+        $result = pg_query($this->dbconn, $queryStr);
+
+        if ($result) {
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
+                $databaseObj = pg_fetch_object($result);
+
+                $fetchedCategory = new Category(
+                    $databaseObj->id,
+                    $databaseObj->category_name,
+                    $databaseObj->member_id
+                );
+
+                $imageArray = $this->getImagesForUser($databaseObj->id);
+                $fetchedCategory->setImages($imageArray);
+                $databaseCategories[] = $fetchedCategory;
+            }
+            pg_free_result($result);
+        }
+        return $databaseCategories;
+    }
+    //---------------------------------------------------------------------------
+    public function getImagesForUser($categoryId)
+    {
+        $databaseImages = [];
+
+        $queryStr = "SELECT * FROM dt161g_project.images WHERE dt161g_project.images.category_id = {$categoryId}";
+
+        $result = pg_query($this->dbconn, $queryStr);
+
+        if ($result) {
+            for ($i = 0; $i < pg_num_rows($result); $i++) {
+                $databaseObj = pg_fetch_object($result);
+                $fetchedImage = new Image($databaseObj->id, $databaseObj->img_name, $databaseObj->category_id);
+                $databaseImages[] = $fetchedImage;
+            }
+            pg_free_result($result);
+        }
+        return $databaseImages;
+    }
+
 
     //-------------------------------------------------------------------------
     public function getMembersFromDataBase()
@@ -77,8 +131,10 @@ class dbHandler
                     );
                     // fetch the roles attached to the current iteration id number:
                     $roleArray = $this->getRolesFromDatabase($databaseObj->id);
+                    $categoryArray = $this->getCategoriesForUser($databaseObj->id);
                     // append the roles to the member object.
                     $fetchedMember->addRole($roleArray);
+                    $fetchedMember->setCategories($categoryArray);
                     // add the Member object to array holding members.
                     $databaseMembers[] = $fetchedMember;
                 }

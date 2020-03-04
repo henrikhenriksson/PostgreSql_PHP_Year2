@@ -12,21 +12,35 @@
 require('util.php');
 $responseText = [];
 
-$currentUser = "";
 
 if ($_GET['name']) {
     session_start();
 
     if (isset($_SESSION['validLogin'])) {
-        $currentUser = $_SESSION['validLogin'];
+        $currentUser = $_SESSION['currentUser'];
+
+        $currentCategories = $currentUser->getCategories();
+
+        // Get all existing categories for specific user from database.
+        // Check for existing Categories.
+        $validCategory = true;
+
+        foreach ($currentUser->getCategories() as $key) {
+            if ($_GET['name'] === $key->getCategoryName()) {
+                $validCategory = false;
+            }
+        }
+
+        if (!$validCategory) {
+            $responseText['msg'] = "Sorry, that Category already exists for this user.";
+        } else {
+            // Add the Category to the user Database.
+            DbHandler::getInstance()->addNewCategory($_GET['name'], $currentUser->getId());
+            $responseText['msg'] = "New Category added succesfully.";
+        }
+    } else {
+        $responseText['msg'] = "No valid user detected. New Category cannot be added.";
     }
-
-    // Get all existing categories for specific user from database.
-
-    // Check for existing Categories.
-
-    // Add the Category to the user Database.
-
 }
 
 header('Content-Type: application/json');

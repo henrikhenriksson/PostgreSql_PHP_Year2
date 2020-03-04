@@ -17,6 +17,7 @@ class Member
     private $userName;
     private $password;
     private $roles;
+    private $categories;
 
 
     public function __construct(int $pId, string $pUserName, string $pPassword)
@@ -25,6 +26,7 @@ class Member
         $this->userName = $pUserName;
         $this->password = $pPassword;
         $this->roles = [];
+        $this->categories = [];
     }
 
     /**
@@ -73,5 +75,25 @@ class Member
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Set the value of categories
+     *
+     * @return  self
+     */
+    public function setCategories(array $categories)
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of categories
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

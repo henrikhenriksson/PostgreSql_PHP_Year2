@@ -53,6 +53,11 @@ class LoginHandler
         return null;
     }
 
+    public function getCurrentUser()
+    {
+        return $this->currentUser;
+    }
+
     public function validatePassword()
     {
         if ($this->currentUser != null) {

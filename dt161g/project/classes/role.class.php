@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Laboration 4, Kurs: DT161G
+ * Projekt, Kurs: DT161G
  * File: role.class.php
  * Desc: Class Role for laboration 4
  *
