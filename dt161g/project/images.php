@@ -41,7 +41,6 @@ if (isset($_GET["user"])) {
 </head>
 
 <body>
-
     <header>
         <h1><?php echo $title ?></h1>
         <p>

@@ -49,7 +49,6 @@ class dbHandler
         return self::$instance;
     }
 
-
     // public function getCategoriesForUser()
     // {
 
@@ -58,29 +57,11 @@ class dbHandler
     //     }
     // }
 
-    // Store a post to the database.
-    public function storePostToDatabase(array $post)
-    {
-        if ($this->connect()) {
-
-            $queryStr = "INSERT INTO dt161g.guestbook (name, message, iplog, timelog) VALUES($1,$2,$3,$4)";
-
-            // by refering to the values as params we get some protection from code injections to the database.
-            $result = pg_query_params($this->dbconn, $queryStr, $post);
-
-            // returns message if the request was unsuccessful.
-            if (!$result) {
-                echo "Error sending request: <br>\n";
-                pg_last_error($this->dbconn);
-            }
-            $this->disconnect();
-        }
-    }
     //-------------------------------------------------------------------------
     public function getMembersFromDataBase()
     {
         if ($this->connect()) {
-            $queryStr = "SELECT * FROM dt161g.member;";
+            $queryStr = "SELECT * FROM dt161g_project.member;";
             $result = pg_query($this->dbconn, $queryStr);
 
             if ($result) {
@@ -116,14 +97,8 @@ class dbHandler
     private function getRolesFromDatabase($memberId)
     {
         $dataBaseRoles = [];
-        // $queryStr = <<<SQL
-        //         SELECT *
-        //         FROM dt161g.role, dt161g.member_role
-        //         WHERE dt161g.role.id = dt161g.member_role.role_id
-        //         AND dt161g.member_role.member_id = $memberId;
-        //     SQL;
 
-        $queryStr = "SELECT * FROM dt161g.role, dt161g.member_role WHERE dt161g.role.id = dt161g.member_role.role_id AND dt161g.member_role.member_id = {$memberId}";
+        $queryStr = "SELECT * FROM dt161g_project.role, dt161g_project.member_role WHERE dt161g_project.role.id = dt161g_project.member_role.role_id AND dt161g_project.member_role.member_id = {$memberId}";
 
         $result = pg_query($this->dbconn, $queryStr);
 
