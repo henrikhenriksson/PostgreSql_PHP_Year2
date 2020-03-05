@@ -14,6 +14,7 @@ require('util.php');
 
 $title = "DT161G - Bildsida";
 $username = "No User is set!";
+$currentUser = "";
 $valid = false;
 $users = dbHandler::getInstance()->getMembersFromDataBase();
 
@@ -21,7 +22,8 @@ if (isset($_GET["user"])) {
     $username = "Invalid User!";
     foreach ($users as $key) {
         if ($key->getUserName() === $_GET["user"]) {
-            $username = $_GET["user"];
+            $currentUser = $key;
+            $username = $key->getUserName();
         }
     }
 }
@@ -43,15 +45,27 @@ if (isset($_GET["user"])) {
 <body>
     <header>
         <h1><?php echo $title ?></h1>
-        <p>
+        <h3>
             Personlig sida för användare: <?php echo $username ?>
-        </p>
+        </h3>
+        <?php require 'includeLogin.php'; ?>
     </header>
 
     <main>
+        <aside>
+            <?php require 'includeUsers.php'; ?>
+        </aside>
+        <section>
+
+            <div id="ImageShowCase">
+
+
+            </div>
+        </section>
     </main>
 
     <footer>
+        <?php require 'includeFooter.php' ?>
     </footer>
 
 </body>

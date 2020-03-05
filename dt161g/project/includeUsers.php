@@ -8,7 +8,7 @@
 // * hehe0601
 // * hehe0601@student.miun.se
 // ****************************************************************************** 
-
+// Send a request to the database as to get a dynamic range of users each time the site loads.
 $users = dbHandler::getInstance()->getMembersFromDataBase();
 
 ?>
@@ -17,9 +17,16 @@ $users = dbHandler::getInstance()->getMembersFromDataBase();
 <nav>
     <h2>Användare</h2>
     <ul>
-        <?php foreach ($users as $key) : ?>
-            <li><a href="<?php echo "images.php?user={$key->getUserName()}"; ?>">
-                    <?php echo strtoupper($key->getUserName()); ?></a></li>
+        <?php foreach ($users as $uKey) : ?>
+            <li><a href="<?php echo "images.php?user={$uKey->getUserName()}";
+                            ?>"><?php echo strtoupper($uKey->getUserName()); ?></a></li>
+            <ul>
+
+                <?php foreach ($uKey->getCategories() as $cKey) : ?>
+                    <li><a href="<?php echo "images.php?user={$uKey->getUserName()}&category={$cKey->getCategoryName()}";
+                                    ?>"><?php echo $cKey->getCategoryName() ?></a></li>
+                <?php endforeach; ?>
+            </ul>
         <?php endforeach; ?>
     </ul>
     <h2>Länkar:</h2>

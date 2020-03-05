@@ -15,6 +15,6 @@
 <div id="welcomeMessage">
 
     <h2>VÄLKOMMEN</h2>
-    <p>Det här är en bildportal där du som användare kan ladda upp bilder.</p>
+    <p>Det här är en bildportal där du som användare kan ladda upp bilder. <br> Logga in och navigera till din medlemmsida i vänstra menyn för att ladda upp bilder. <br> Bilderna sorteras per användare och kategori, en användare kan ha flera kategorier, en användare kan dock inte skapa två kategorier med samma namn. <br> Du kan se alla användares bilder genom att navigera till deras personliga sida via länkarna till vänster.</p>
 
 </div>
