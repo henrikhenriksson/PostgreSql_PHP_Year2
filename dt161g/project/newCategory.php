@@ -12,7 +12,6 @@
 require('util.php');
 $responseText = [];
 
-
 if ($_GET['name']) {
     session_start();
 
