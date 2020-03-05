@@ -15,8 +15,6 @@ class FileHandler
     private static $instance = null;
     private $responseText;
     private $validUpload;
-    private $category;
-    private $currentUser;
     private $validFileTypes;
     private $targetDir;
     //-------------------------------------------------------------------------
@@ -36,11 +34,35 @@ class FileHandler
         return self::$instance;
     }
     //-------------------------------------------------------------------------
+    public function createCategoryFolder($memberName, $categoryName)
+    {
+        $dirToCreate = "{$this->targetDir}/{$memberName}/{$categoryName}/";
+        if ($this->validateTargetFolder($dirToCreate)) {
+            mkdir($dirToCreate, 0777, true);
+        }
+    }
+    //-------------------------------------------------------------------------
+    public function createUserFolder($memberName)
+    {
+        $dirToCreate = "{$this->targetDir}/{$memberName}/";
+        if ($this->validateTargetFolder($dirToCreate)) {
+            mkdir($dirToCreate, 0777, true);
+        }
+    }
+    //-------------------------------------------------------------------------
     public function validateAndUpload($currentUser, $category, $FILES)
     {
         $this->validUpload = false;
 
-        $targetFile = "{$this->targetDir}/{$currentUser}/{$category}/" . basename($FILES["file"]["name"]);
+        $currentCategoryId = "";
+
+        foreach ($currentUser->getCategories() as $key) {
+            if ($category === $key->getCategoryName()) {
+                $currentCategoryId = $key->getId();
+            }
+        }
+
+        $targetFile = "{$this->targetDir}/{$currentUser->getUserName()}/{$category}/" . basename($FILES["file"]["name"]);
         $imgExt = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
         if (self::isImage($FILES)) {
@@ -62,8 +84,8 @@ class FileHandler
         }
 
         if ($this->validUpload) {
-            self::validateTargetFolder("{$this->targetDir}/{$currentUser}/{$category}/");
             if (move_uploaded_file($FILES["file"]["tmp_name"], $targetFile)) {
+                dbHandler::getInstance()->addNewImage(basename($FILES["file"]["name"]), $currentCategoryId);
                 $this->responseText['msg'] = "The file " . basename($FILES["file"]["name"]) . " has been uploaded.";
             } else {
                 $this->responseText['msg'] =  "Sorry, there was an error that was probably not your fault uploading your file.";
@@ -109,9 +131,10 @@ class FileHandler
     //-------------------------------------------------------------------------
     private function validateTargetFolder($targetDir)
     {
-        if (file_exists($targetDir)) {
+        if (!file_exists($targetDir)) {
+            return true;
         } else {
-            mkdir($targetDir, 0777, true);
+            return false;
         }
     }
     //-------------------------------------------------------------------------

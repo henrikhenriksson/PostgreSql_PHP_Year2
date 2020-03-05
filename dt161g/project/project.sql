@@ -63,8 +63,8 @@ CREATE TABLE dt161G_Project.category (
     CONSTRAINT unique_category_member UNIQUE(category_name, member_id)
   ) WITHOUT OIDS;
 -- Create the Image table:
-  DROP TABLE IF EXISTS dt161G_Project.images CASCADE;
-CREATE TABLE dt161G_Project.images (
+  DROP TABLE IF EXISTS dt161G_Project.image CASCADE;
+CREATE TABLE dt161G_Project.image (
     id SERIAL PRIMARY KEY,
     img_name text NOT NULL CHECK (img_Name <> ''),
     category_id INTEGER references dt161G_Project.category(id),

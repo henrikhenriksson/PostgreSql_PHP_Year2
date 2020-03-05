@@ -26,8 +26,7 @@ function main() {
 
   const CURRENT_PAGE = window.location.pathname;
 
-  if (CURRENT_PAGE.includes('userpage.php')) {
-    byId('categoryButton').addEventListener('click', doAddCategory, false);
+  if (CURRENT_PAGE.includes('userpage.php') && byId('uploadButton')) {
     byId('uploadButton').addEventListener('click', doUpload, false);
   }
 
@@ -53,11 +52,11 @@ window.addEventListener('load', main, false); // Connect the main function to wi
 function doUpload() {
   let fileInput = byId('fileToUpload');
   let file = fileInput.files[0];
+  let selectedCategory = byId('categorySelector').value;
 
   let formData = new FormData();
   formData.append('file', file);
-  formData.append('username', 'test1');
-  formData.append('category', 'test');
+  formData.append('category', selectedCategory);
 
   if (formData.values != null) {
     xhr.addEventListener('readystatechange', processUpload, false);
@@ -68,15 +67,15 @@ function doUpload() {
 /*******************************************************************************
  * Function doAddCategory
  ******************************************************************************/
-function doAddCategory() {
-  let catToAdd = byId('newCategory').value;
+// function doAddCategory() {
+//   let catToAdd = byId('newCategory').value;
 
-  if (byId('newCategory').value != '') {
-    xhr.addEventListener('readystatechange', processCategory, false);
-    xhr.open('GET', `newCategory.php?name=${catToAdd}`, true);
-    xhr.send(null);
-  }
-}
+//   if (byId('newCategory').value != '') {
+//     xhr.addEventListener('readystatechange', processCategory, false);
+//     xhr.open('GET', `newCategory.php?name=${catToAdd}`, true);
+//     xhr.send(null);
+//   }
+// }
 
 /*******************************************************************************
  * Function doLogin
@@ -103,14 +102,14 @@ function doLogout() {
 /*******************************************************************************
  * Function processCategory
  ******************************************************************************/
-function processCategory() {
-  if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-    xhr.removeEventListener('readystatechange', processCategory, false);
-    console.log(this.responseText);
-    let myResponse = JSON.parse(this.responseText);
-    byId('categoryStatus').innerHTML = myResponse['msg'];
-  }
-}
+// function processCategory() {
+//   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+//     xhr.removeEventListener('readystatechange', processCategory, false);
+//     console.log(this.responseText);
+//     let myResponse = JSON.parse(this.responseText);
+//     byId('categoryStatus').innerHTML = myResponse['msg'];
+//   }
+// }
 /*******************************************************************************
  * Function processUpload
  ******************************************************************************/
@@ -132,7 +131,6 @@ function processLogin() {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
 
-    console.log(this.responseText);
     var myResponse = JSON.parse(this.responseText);
     const CURRENT_PAGE = window.location.pathname;
 

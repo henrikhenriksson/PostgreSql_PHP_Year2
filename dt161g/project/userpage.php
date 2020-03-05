@@ -5,17 +5,13 @@
  * File: userpage.php
  * Desc: Userpage page for Projekt
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson 
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 session_start();
 require('util.php');
-/*******************************************************************************
- * HTML section starts here
- ******************************************************************************/
-
 
 if (!isset($_SESSION['validLogin'])) {
     header("Location: index.php"); /* Redirect browser */
@@ -23,6 +19,48 @@ if (!isset($_SESSION['validLogin'])) {
 } else {
     $title = "DT161G - Användarsida";
 }
+//---------------------------------------------------------------------------
+$statusMessage = "";
+$currentUser;
+// Always send a new request for members to the database to ensure added categories are listed.
+$userArray = dbHandler::getInstance()->getMembersFromDataBase();
+
+// get the current user:
+foreach ($userArray as $uKey) {
+    if ($_SESSION['validLogin'] == $uKey->getUserName()) {
+        $currentUser = $uKey;
+    }
+}
+
+if (isset($_SESSION['message'])) {
+    $statusMessage = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
+
+if (isset($_POST['newCategory'])) {
+
+
+    // Check if the entered category already exists in the database:
+    $validCategory = true;
+    foreach ($currentUser->getCategories() as $cKey) {
+        if ($_POST['newCategory'] === $cKey->getCategoryName()) {
+            $validCategory = false;
+        }
+    }
+
+    if (!$validCategory) {
+        $statusMessage = "Sorry, that Category already exists for this user.";
+    } else {
+        // Add the Category to the user Database.
+        DbHandler::getInstance()->addNewCategory($_POST['newCategory'], $currentUser->getId());
+        FileHandler::getInstance()->createCategoryFolder($currentUser->getUserName(), $_POST['newCategory']);
+        $_SESSION['message'] = "New Category added succesfully.";
+        header("Location: userpage.php");
+    }
+}
+/*******************************************************************************
+ * HTML section starts here
+ ******************************************************************************/
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +94,32 @@ if (!isset($_SESSION['validLogin'])) {
                 Det skall också gå att skapa nya kategorier på denna sida.<br>
                 På denna sida skall man också kunna ladda upp bilder och välja vilken kategori som bilden skall hamna i.
             </p>
-            <?php require "includeUpload.php" ?>
+            <div id="categoryDiv">
+                <p>Create a new Category</p>
+                <form id="categoryForm" action="userpage.php" method="POST">
+                    <input type="text" name="newCategory" id="newCategory" required>
+                    <button type="submit" id="categoryButton">Create Category</button>
+                </form>
+                <p id="categoryStatus"><?php echo $statusMessage ?></p>
+            </div>
+            <?php if ($currentUser->getCategories() != null) : ?>
+                <div id="uploadDiv">
+                    <form id="uploadForm">
+                        <p>Select Image to Upload</p>
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+
+                        <label for="" id="categoryChooserLabel">Select a Category</label>
+                        <select name="categories" id="categorySelector">
+                            <?php foreach ($currentUser->getCategories() as $key) : ?>
+                                <option><?php echo $key->getCategoryName() ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br>
+                        <button type="button" id="uploadButton">Upload Image</button>
+                    </form>
+                    <p id="uploadStatus"></p>
+                </div>
+            <?php endif; ?>
         </section>
     </main>
 

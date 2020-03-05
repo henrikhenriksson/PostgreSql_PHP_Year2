@@ -49,6 +49,21 @@ class dbHandler
         return self::$instance;
     }
 
+    public function addNewImage($imgName, $category_Id)
+    {
+        if ($this->connect()) {
+            $queryStr = "INSERT INTO dt161g_project.image (img_name, category_id) VALUES($1,$2)";
+
+            $result = pg_query_params($this->dbconn, $queryStr, array($imgName, $category_Id));
+
+            if (!$result) {
+                echo "Error sending request: <br>\n";
+                pg_last_error($this->dbconn);
+            }
+            $this->disconnect();
+        }
+    }
+    //-------------------------------------------------------------------------
     public function addNewCategory($name, $memberid)
     {
         if ($this->connect()) {
@@ -95,7 +110,7 @@ class dbHandler
     {
         $databaseImages = [];
 
-        $queryStr = "SELECT * FROM dt161g_project.images WHERE dt161g_project.images.category_id = {$categoryId}";
+        $queryStr = "SELECT * FROM dt161g_project.image WHERE dt161g_project.image.category_id = {$categoryId}";
 
         $result = pg_query($this->dbconn, $queryStr);
 
