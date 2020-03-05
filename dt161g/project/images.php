@@ -12,18 +12,29 @@
 session_start();
 require('util.php');
 
+
 $title = "DT161G - Bildsida";
 $username = "No User is set!";
-$currentUser = "";
+$currentUser = null;
+$currentCategory = null;
 $valid = false;
 $users = dbHandler::getInstance()->getMembersFromDataBase();
 
 if (isset($_GET["user"])) {
+    $imageDir = "../../writeable/{$_GET['user']}";
     $username = "Invalid User!";
     foreach ($users as $key) {
         if ($key->getUserName() === $_GET["user"]) {
             $currentUser = $key;
             $username = $key->getUserName();
+        }
+    }
+
+    if (isset($_GET["category"]) && $currentUser != null) {
+        foreach ($currentUser->getCategories() as $cKey) {
+            if ($cKey->getCategoryName() === $_GET["category"]) {
+                $currentCategory = $cKey;
+            }
         }
     }
 }
@@ -45,9 +56,7 @@ if (isset($_GET["user"])) {
 <body>
     <header>
         <h1><?php echo $title ?></h1>
-        <h3>
-            Personlig sida för användare: <?php echo $username ?>
-        </h3>
+
         <?php require 'includeLogin.php'; ?>
     </header>
 
@@ -56,9 +65,23 @@ if (isset($_GET["user"])) {
             <?php require 'includeUsers.php'; ?>
         </aside>
         <section>
-
+            <h3>
+                Personlig sida för användare: <?php echo $username ?>
+            </h3>
             <div id="ImageShowCase">
-
+                <?php if ($currentUser != null && $currentCategory != null) : ?>
+                    <?php foreach ($currentCategory->getImages() as $image) : ?>
+                        <img src="<?php echo $imageDir ?>/<?php echo $currentCategory->getCategoryName() ?>/<?php echo $image->getImgName() ?>" alt="image loaded server." class="image">
+                    <?php endforeach; ?>
+                <?php elseif ($currentUser != null && !isset($_GET['category'])) : ?>
+                    <?php foreach ($currentUser->getCategories() as $cKey) : ?>
+                        <?php foreach ($cKey->getImages() as $cImage) : ?>
+                            <img src="<?php echo $imageDir ?>/<?php echo $cKey->getCategoryName() ?>/<?php echo $cImage->getImgName() ?>" alt="image loaded server." class="image">
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p>Error: Invalid user or category</p>
+                <?php endif; ?>
 
             </div>
         </section>

@@ -21,13 +21,13 @@ $loggedOut = isset($_SESSION['validLogin']) ? "" : "hide";
 
     <form id="loginForm">
         <label><b>Username:</b></label>
-        <input type="text" placeholder="m" name="uname" id="uname" required maxlength="10" value="m" autocomplete="off">
+        <input type="text" placeholder="Enter Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
         <label><b>Password:</b></label>
         <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
         <button type="button" id="loginButton">Login</button>
     </form>
 </div>
 <div id="logout" class="<?php echo $loggedOut; ?>">
-    <h2>LOGOUT</h2>
+    <h3>LOGOUT</h3>
     <button type="button" id="logoutButton">Logout</button>
 </div>

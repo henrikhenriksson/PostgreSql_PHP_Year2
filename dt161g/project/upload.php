@@ -11,6 +11,13 @@
  ******************************************************************************/
 require('util.php');
 
+if (!isset($_SESSION['validLogin'])) {
+    header("Location: index.php"); /* Redirect browser */
+    exit;
+} else {
+    $title = "DT161G - Användarsida";
+}
+
 if (isset($_FILES['file'])) {
     session_start();
     $filehandler = FileHandler::getInstance();

@@ -20,9 +20,7 @@ $link_array = [
 session_start();
 
 foreach ($_SESSION as $key => $value) {
-    if ($key !== "sCap") {
-        unset($_SESSION[$key]);
-    }
+    unset($_SESSION[$key]);
 }
 
 // set Confirmation message and add links to display to the response.

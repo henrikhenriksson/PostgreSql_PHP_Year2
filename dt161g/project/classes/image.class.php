@@ -35,7 +35,7 @@ class Image
     /**
      * Get the value of img_name
      */
-    public function getImg_name()
+    public function getImgName()
     {
         return $this->imgName;
     }

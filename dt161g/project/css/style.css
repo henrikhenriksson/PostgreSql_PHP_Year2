@@ -154,3 +154,13 @@ footer {
   align-content: center;
   text-align: center;
 }
+.image {
+  /* width: 185px; */
+  max-width: 550px;
+  height: auto;
+}
+
+#ImageShowCase {
+  background-color: grey;
+  border: 1px solid black;
+}
