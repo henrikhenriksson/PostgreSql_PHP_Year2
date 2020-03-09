@@ -44,7 +44,7 @@ if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
         </aside>
         <section>
             <h2>Medlemssida</h2>
-            <p>Denna sida skall bara kunna ses av inloggade administratörer</p>
+            <p class="IntroText">Denna sida skall bara kunna ses av inloggade administratörer. <br> Om jag hinner med kommer man även att kunna lägga till användare på den här sidan.</p>
         </section>
     </main>
     <footer>

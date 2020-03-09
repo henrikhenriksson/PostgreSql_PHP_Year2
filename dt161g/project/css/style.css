@@ -164,3 +164,17 @@ footer {
   background-color: grey;
   border: 1px solid black;
 }
+.bold {
+  font-weight: bold;
+}
+
+.IntroText {
+  border: 1px solid black;
+}
+
+#categoryDiv,
+#uploadDiv,
+#removeCategory {
+  background-color: grey;
+  border: 1px solid black;
+}

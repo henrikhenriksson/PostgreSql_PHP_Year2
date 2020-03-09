@@ -10,7 +10,7 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 require('util.php');
-
+session_start();
 if (!isset($_SESSION['validLogin'])) {
     header("Location: index.php"); /* Redirect browser */
     exit;
@@ -19,7 +19,7 @@ if (!isset($_SESSION['validLogin'])) {
 }
 
 if (isset($_FILES['file'])) {
-    session_start();
+    //session_start();
     $filehandler = FileHandler::getInstance();
     // Find the current user with a new database request to make sure the category list has been updated.
     $currentUser = "";
@@ -32,5 +32,5 @@ if (isset($_FILES['file'])) {
 
     $category = $_POST['category'];
     $filehandler->validateAndUpload($currentUser, $category, $_FILES);
+    $filehandler->sendReply();
 }
-$filehandler->sendReply();

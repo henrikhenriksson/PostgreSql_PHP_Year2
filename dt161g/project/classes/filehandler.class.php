@@ -52,6 +52,18 @@ class FileHandler
             mkdir($dirToCreate, 0777, true);
         }
     }
+    /**
+     * Remove category folder
+     */
+    public function removeCategoryFolder($memberName, $categoryName)
+    {
+        $dirToRemove = "{$this->targetDir}/{$memberName}/{$categoryName}";
+        if (!$this->validateTargetFolder($dirToRemove)) {
+            array_map('unlink', glob("$dirToRemove/*.*"));
+            rmdir($dirToRemove);
+        }
+    }
+
     //-------------------------------------------------------------------------
     /**
      * This function is responsible for creating a new folder for the user, if one does not already exist.

@@ -42,6 +42,7 @@ require('util.php');
         </aside>
         <section>
             <?php require 'includeWelcome.php' ?>
+            <p class="bold red">Du är inloggad som användare: <?php echo $_SESSION['validLogin'] ?></p>
         </section>
     </main>
     <footer>

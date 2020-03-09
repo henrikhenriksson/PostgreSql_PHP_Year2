@@ -96,7 +96,26 @@ class dbHandler
             $this->disconnect();
         }
     }
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    /**
+     * This functions sends a request to the database to remove a specific category from a member.
+     * @param int the category id.
+     */
+    public function removeCategory(int $categoryId)
+    {
+        if ($this->connect()) {
+            $queryStr = "DELETE FROM dt161g_project.category WHERE id = $1;";
+
+            $result = pg_query_params($this->dbconn, $queryStr, array($categoryId));
+
+            if (!$result) {
+                echo "Error sending request: <br>\n";
+                pg_last_error($this->dbconn);
+            }
+            $this->disconnect();
+        }
+    }
+    //-------------------------------------------------------------------------
     /**
      * This functions sends a request to the database to get all categories related to the member id.
      * @param $memberId, the id of the member to get the categories for.

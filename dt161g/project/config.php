@@ -19,7 +19,7 @@ $confSettings = [
     'user' => "hehe0601",
     'pass' => "b0cZeRKbe",
     'debug' => true,
-    'targetdir' => __DIR__ . "\\..\\..\\writeable\\",
+    'targetdir' => __DIR__ . "\\..\\..\\writeable",
     'validFileTypes' => [
         "gif", "jpeg", "jpg", "png"
     ],
