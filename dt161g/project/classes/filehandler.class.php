@@ -1,9 +1,9 @@
 <?php
 
 /*******************************************************************************
- * Project, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: login.php
- * Desc: Login page for laboration 2
+ * Desc: FileHandler class file for dt161g Project Assignment
  *
  * Henrik Henriksson
  * hehe0601

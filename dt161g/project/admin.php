@@ -1,9 +1,9 @@
 <?php
 
 /*******************************************************************************
- * Laboration 4, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: member.php
- * Desc: Member page for laboration 2
+ * Desc: Admin page for dt161g Project Assignment
  *
  * Henrik Henriksson
  * hehe0601

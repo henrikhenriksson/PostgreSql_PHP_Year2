@@ -1,9 +1,9 @@
 <?php
 /*
 ******************************************************************************
-// * Laboration 4, Kurs: DT161G
+// * Project Assignment, Kurs: DT161G
 // * File: includeLogin.php
-// * Desc: Start page for laboration 2
+// * Desc: Start page for dt161g Project Assignment
 // *
 // * Henrik Henriksson
 // * hehe0601

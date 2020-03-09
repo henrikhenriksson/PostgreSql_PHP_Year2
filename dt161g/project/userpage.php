@@ -1,9 +1,9 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: userpage.php
- * Desc: Userpage page for Projekt
+ * Desc: Userpage page for dt161g Project Assignment
  *
  * Henrik Henriksson 
  * hehe0601

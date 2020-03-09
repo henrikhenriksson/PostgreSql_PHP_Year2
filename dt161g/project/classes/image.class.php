@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: image.class.php
  * Desc: Class Image for Projekt
  *

@@ -1,13 +1,13 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: util.php
- * Desc: Util file for Projekt
+ * Desc: Util file for dt161g Project Assignment
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 /*******************************************************************************

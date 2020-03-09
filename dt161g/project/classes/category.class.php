@@ -1,9 +1,9 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: role.class.php
- * Desc: Class Role for laboration 4
+ * Desc: Category class file for dt161g project.
  *
  * Henrik Henriksson
  * hehe0601
@@ -14,7 +14,6 @@
 
 /**
  * * @brief this class represents a category object used in the image.php. It is responsible for holding information about a specific category a user has created, and related images this category contains.
- *
  */
 class Category
 {
@@ -23,7 +22,6 @@ class Category
     private $categoryname;
     private $memberid;
     private $images;
-
 
     /**
      *  @brief public constructor used to set member variables and initiating the images array that will be loaded in the database handler.

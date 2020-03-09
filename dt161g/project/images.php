@@ -1,9 +1,9 @@
 <?PHP
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: images.php
- * Desc: Image page for Projekt
+ * Desc: Image page for dt161g Project Assignment
  *
  * Henrik Henriksson 
  * hehe0601

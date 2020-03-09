@@ -1,9 +1,9 @@
 <?PHP
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: config.php
- * Desc: Config file for Projekt
+ * Desc: Config file for dt161g Project Assignment
  *
  * Henrik Henriksson
  * hehe0601
@@ -38,7 +38,3 @@ $member_link_array = [
 $admin_link_array = [
     "Adminsida" => "admin.php"
 ];
-// // This array holds valid file types for image uploads.
-// $validFileTypes = [
-//     "gif", "jpeg", "jpg", "png"
-// ];

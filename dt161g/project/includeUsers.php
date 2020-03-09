@@ -1,8 +1,8 @@
 <?php
 // *******************************************************************************
-// * Laboration 4, Kurs: DT161G
-// * File: includeMenu.php
-// * Desc: Start page for laboration 2
+// * Project Assignment, Kurs: DT161G
+// * File: includeUsers.php
+// * Desc: html page set in the aside for the nav part of the app.
 // *
 // * Henrik Henriksson
 // * hehe0601

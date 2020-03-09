@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: includeImageForm.php
  * Desc: inclusion file for image upload form
  *

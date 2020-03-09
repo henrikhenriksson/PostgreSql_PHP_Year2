@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Project Kurs: DT161G
+ * Project Assignment Kurs: DT161G
  * File: config.php
  * Desc: dbHandler class file for dt161g project
  *

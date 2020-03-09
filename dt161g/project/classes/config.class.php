@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: config.class.php
  * Desc: Class Config for dt161g project
  *

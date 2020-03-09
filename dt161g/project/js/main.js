@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: main.js
- * Desc: main JavaScript file for Project
+ * Desc: main JavaScript file for Project Assignment
  *
  * Henrik Henriksson
  * hehe0601
@@ -26,6 +26,7 @@ function main() {
 
   const CURRENT_PAGE = window.location.pathname;
 
+  // Add event listener to upload button, if the userpage is active.
   if (CURRENT_PAGE.includes('userpage.php') && byId('uploadButton')) {
     byId('uploadButton').addEventListener('click', doUpload, false);
   }
@@ -54,28 +55,18 @@ function doUpload() {
   let file = fileInput.files[0];
   let selectedCategory = byId('categorySelector').value;
 
+  // Create a formdata object and append the file to be uploaded as well as the selected category to the formdata.
   let formData = new FormData();
   formData.append('file', file);
   formData.append('category', selectedCategory);
 
+  // Send the formdata.
   if (formData.values != null) {
     xhr.addEventListener('readystatechange', processUpload, false);
     xhr.open('POST', `upload.php`, true);
     xhr.send(formData);
   }
 }
-/*******************************************************************************
- * Function doAddCategory
- ******************************************************************************/
-// function doAddCategory() {
-//   let catToAdd = byId('newCategory').value;
-
-//   if (byId('newCategory').value != '') {
-//     xhr.addEventListener('readystatechange', processCategory, false);
-//     xhr.open('GET', `newCategory.php?name=${catToAdd}`, true);
-//     xhr.send(null);
-//   }
-// }
 
 /*******************************************************************************
  * Function doLogin
@@ -99,17 +90,6 @@ function doLogout() {
   xhr.open('GET', 'logout.php', true);
   xhr.send(null);
 }
-/*******************************************************************************
- * Function processCategory
- ******************************************************************************/
-// function processCategory() {
-//   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-//     xhr.removeEventListener('readystatechange', processCategory, false);
-//     console.log(this.responseText);
-//     let myResponse = JSON.parse(this.responseText);
-//     byId('categoryStatus').innerHTML = myResponse['msg'];
-//   }
-// }
 /*******************************************************************************
  * Function processUpload
  ******************************************************************************/

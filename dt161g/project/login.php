@@ -1,13 +1,13 @@
 <?PHP
 
 /*******************************************************************************
- * Projekt, Kurs: DT161G
+ * Project Assignment, Kurs: DT161G
  * File: login.php
- * Desc: Login page for Projekt
+ * Desc: Login page for dt161g Project Assignment
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Henrik Henriksson
+ * hehe0601
+ * hehe0601@student.miun.se
  ******************************************************************************/
 
 require('util.php');
