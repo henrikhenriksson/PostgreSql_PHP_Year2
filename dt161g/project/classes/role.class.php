@@ -10,13 +10,21 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-
+/**
+ * This class represents a role a member can have in the database, either member or admin.
+ */
 class Role
 {
     private $id;
     private $role;
     private $roleText;
 
+    /**
+     *  Public constructor setting member variables
+     * @param $pId, the id to set
+     * @param $pRole, the role to set
+     * @param $pRoleText, the roleText to set
+     */
     public function __construct(int $pId, string $pRole, string $pRoleText)
     {
         $this->id = $pId;
@@ -26,6 +34,7 @@ class Role
 
     /**
      * Get the value of role
+     * @return $this->role;
      */
     public function getRole()
     {
@@ -34,6 +43,7 @@ class Role
 
     /**
      * Get the value of roleText
+     * @return $this->roleText;
      */
     public function getRoleText()
     {
@@ -42,6 +52,7 @@ class Role
 
     /**
      * Get the value of id
+     * @return $this->id;
      */
     public function getId()
     {

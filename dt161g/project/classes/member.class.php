@@ -10,7 +10,9 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-
+/**
+ * This class represents an individual member as found in the database.
+ */
 class Member
 {
     private $id;
@@ -19,7 +21,12 @@ class Member
     private $roles;
     private $categories;
 
-
+    /** 
+     * Public constructor setting member variable values and initiating role and category arrays.
+     * @param $pId, the id to set
+     * @param $pUserName, the userName to set
+     * @param $pPassword, the password to set
+     *  */
     public function __construct(int $pId, string $pUserName, string $pPassword)
     {
         $this->id = $pId;
@@ -31,6 +38,7 @@ class Member
 
     /**
      * Get the value of id
+     * @return $this->id;
      */
     public function getId()
     {
@@ -38,6 +46,7 @@ class Member
     }
     /**
      * Get the value of userName
+     * @return $this->userName;
      */
     public function getUserName()
     {
@@ -46,11 +55,15 @@ class Member
 
     /**
      * Get the value of password
+     * @return $this->password;
      */
     public function getPassword()
     {
         return $this->password;
     }
+    /**
+     * Return this member object as an array entry.
+     */
     public function getMemberAsArray()
     {
         return [
@@ -60,6 +73,10 @@ class Member
         ];
     }
 
+    /**
+     * Get the value of the roles array
+     * @return $this->roles;
+     */
     public function getRoleArray()
     {
         return $this->roles;
@@ -91,6 +108,7 @@ class Member
 
     /**
      * Get the value of categories
+     * @return $this->categories;
      */
     public function getCategories()
     {

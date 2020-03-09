@@ -1,23 +1,28 @@
 <?php
 
 /*******************************************************************************
- * Laboration 4, Kurs: DT161G
+ * Project Kurs: DT161G
  * File: config.php
- * Desc: dbHandler class file for Laboration 4
+ * Desc: dbHandler class file for dt161g project
  *
  * Henrik Henriksson
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-// This Singleton class is responsible for handling requests to the database.
-// 
+
+/**
+ * This class is the database handler. It is responsible for handling all requests to the database. It is represented as a singleton.
+ */
 class dbHandler
 {
     private static $instance = null;
     private $dbconn;
     private $dbDsn;
 
+    /**
+     * Private constructor setting the connection string to the database.
+     */
     private function __construct()
     {
         $dbconn = null;
@@ -25,13 +30,17 @@ class dbHandler
         $this->dbDsn = $config->getDbDsn();
     }
 
-    // establish a connection to the server.
+    /**
+     * Used to establish a connection to the server.
+     */
     private function connect()
     {
         $this->dbconn = pg_connect($this->dbDsn);
         return $this->dbconn;
     }
-    // disconnect from the server.
+    /**
+     * Used to end the connection to the server.
+     */
     private function disconnect()
     {
         pg_close($this->dbconn);
@@ -41,6 +50,9 @@ class dbHandler
     // Public functions:
     //-------------------------------------------------------------------------
 
+    /**
+     * This function is used to get the current instance of the class. If no class instance is set, one is iniatated calling the private constructor.
+     */
     public static function getInstance()
     {
         if (!self::$instance) {
@@ -49,6 +61,9 @@ class dbHandler
         return self::$instance;
     }
 
+    /**
+     * This function is responsible for uploading information about an image to the database.
+     */
     public function addNewImage($imgName, $category_Id)
     {
         if ($this->connect()) {
@@ -64,6 +79,9 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function is used to upload information about a new category to the server.
+     */
     public function addNewCategory($name, $memberid)
     {
         if ($this->connect()) {
@@ -79,6 +97,11 @@ class dbHandler
         }
     }
     //---------------------------------------------------------------------------
+    /**
+     * This functions sends a request to the database to get all categories related to the member id.
+     * @param $memberId, the id of the member to get the categories for.
+     * @return $databaseCategories[], an array holding category object.
+     */
     public function getCategoriesForUser($memberId)
     {
         $databaseCategories = [];
@@ -106,6 +129,11 @@ class dbHandler
         return $databaseCategories;
     }
     //---------------------------------------------------------------------------
+    /**
+     * This function sends a request to the database to get all images related to a specific category
+     * @param $categoryId, the id of the current category
+     * @return $databaseImages[]
+     */
     public function getImagesForUser($categoryId)
     {
         $databaseImages = [];
@@ -124,9 +152,33 @@ class dbHandler
         }
         return $databaseImages;
     }
-
-
     //-------------------------------------------------------------------------
+    /**
+     * This function returns an array of Roles attached to a parameter id
+     * @param $memberId the id of the member
+     * @return $dataBaseRoles[]
+     */
+    private function getRolesFromDatabase($memberId)
+    {
+        $dataBaseRoles = [];
+
+        $queryStr = "SELECT * FROM dt161g_project.role, dt161g_project.member_role WHERE dt161g_project.role.id = dt161g_project.member_role.role_id AND dt161g_project.member_role.member_id = {$memberId}";
+
+        $result = pg_query($this->dbconn, $queryStr);
+
+        for ($i = 0; $i < pg_num_rows($result); $i++) {
+            $databaseObj = pg_fetch_object($result);
+            $fetchedPost = new Role($databaseObj->id, $databaseObj->role, $databaseObj->roletext);
+            $dataBaseRoles[] = $fetchedPost;
+        }
+        pg_free_result($result);
+        return $dataBaseRoles;
+    }
+    //-------------------------------------------------------------------------
+    /**
+     * This function sends request to fetch all members from the database. It calls subfunctions that in turns sends subsequent requests to fetch categories and images. This function is also responsible for opening and closing the connection.
+     * @return $databaseMembers[]
+     */
     public function getMembersFromDataBase()
     {
         if ($this->connect()) {
@@ -146,9 +198,11 @@ class dbHandler
                     );
                     // fetch the roles attached to the current iteration id number:
                     $roleArray = $this->getRolesFromDatabase($databaseObj->id);
+                    // fetch the categories related to the current member.
                     $categoryArray = $this->getCategoriesForUser($databaseObj->id);
                     // append the roles to the member object.
                     $fetchedMember->addRole($roleArray);
+                    // append the categories to the member 
                     $fetchedMember->setCategories($categoryArray);
                     // add the Member object to array holding members.
                     $databaseMembers[] = $fetchedMember;
@@ -162,24 +216,6 @@ class dbHandler
         } else {
             return null;
         }
-    }
-    //-------------------------------------------------------------------------
-    // This function returns an array of Roles attached to a parameter id
-    private function getRolesFromDatabase($memberId)
-    {
-        $dataBaseRoles = [];
-
-        $queryStr = "SELECT * FROM dt161g_project.role, dt161g_project.member_role WHERE dt161g_project.role.id = dt161g_project.member_role.role_id AND dt161g_project.member_role.member_id = {$memberId}";
-
-        $result = pg_query($this->dbconn, $queryStr);
-
-        for ($i = 0; $i < pg_num_rows($result); $i++) {
-            $databaseObj = pg_fetch_object($result);
-            $fetchedPost = new Role($databaseObj->id, $databaseObj->role, $databaseObj->roletext);
-            $dataBaseRoles[] = $fetchedPost;
-        }
-        pg_free_result($result);
-        return $dataBaseRoles;
     }
 }
 //---------------------------------------------------------------------------

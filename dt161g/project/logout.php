@@ -24,7 +24,7 @@ foreach ($_SESSION as $key => $value) {
 }
 
 // set Confirmation message and add links to display to the response.
-$responseText['msg'] = "You are logged out and the session cookie has been destroyed";
+$responseText['msg'] = "You are logged out and the session has been destroyed";
 $responseText['links'] = $link_array;
 header('Content-Type: application/json');
 echo json_encode($responseText);

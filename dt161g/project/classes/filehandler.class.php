@@ -10,6 +10,7 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
+/** This class is responsible for handling file operations such as saving to file and loading from file. */
 class FileHandler
 {
     private static $instance = null;
@@ -18,6 +19,7 @@ class FileHandler
     private $validFileTypes;
     private $targetDir;
     //-------------------------------------------------------------------------
+    /** Private constructor setting initial member variable values. */
     private function __construct()
     {
         // require __DIR__ . "/../config.php";
@@ -26,6 +28,10 @@ class FileHandler
         $this->targetDir = Config::getInstance()->getTargetDir();
     }
     //-------------------------------------------------------------------------
+    /**
+     * Fetch the current instance of the class. If no instance is currently running the constructor is called to initiate.
+     * @return self::$instance;
+     */
     public static function getInstance()
     {
         if (!self::$instance) {
@@ -34,6 +40,11 @@ class FileHandler
         return self::$instance;
     }
     //-------------------------------------------------------------------------
+    /**
+     * This fucntion is responsible for creating a new category folder if it does not already exists. The check is reduntand in the current implementation. But makes the class modular.
+     * @param $memberName the name of the member.
+     * @param $categoryName, the name of the catogory folder to create.
+     */
     public function createCategoryFolder($memberName, $categoryName)
     {
         $dirToCreate = "{$this->targetDir}/{$memberName}/{$categoryName}/";
@@ -42,6 +53,9 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function is responsible for creating a new folder for the user, if one does not already exist.
+     */
     public function createUserFolder($memberName)
     {
         $dirToCreate = "{$this->targetDir}/{$memberName}/";
@@ -50,6 +64,12 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function is responsible for validating a file the user is attempting to upload, and if all checks pass - upload the file to the server.
+     * @param $currentUser, the current user attempting to upload an image
+     * @param $category, the category the images adheres to
+     * @param $FILES, the entire $_FILES suberglobal.
+     */
     public function validateAndUpload($currentUser, $category, $FILES)
     {
         $this->validUpload = false;
@@ -93,6 +113,11 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * Check if the file is an image. Returns true if the file has an image size value.
+     * @param $FILES, $_FILES suberglobal as an input variable.
+     * @return boolean
+     */
     private function isImage(array $FILES)
     {
         if (getimagesize($FILES['file']['tmp_name'])) {
@@ -102,6 +127,11 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function checks if the current file already exists on the server. Returns true if the file is not a dublicate
+     * @param $targetFile, the path of the image.
+     * @return boolean
+     */
     private function isNotDupe($targetFile)
     {
         if (!file_exists($targetFile)) {
@@ -111,15 +141,24 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * Check the file size to make sure it does not exceed the max limit.
+     * @param $FILES, the suberglobal $_FILES parameter
+     * @return boolean
+     */
     private function isNotLarge($FILES)
     {
-        if ($_FILES['file']['size'] < 5000001) {
+        if ($_FILES['file']['size'] < 5000000) {
             return true;
         } else {
             return false;
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * Check if the file has a valid extension
+     * @return boolean
+     */
     private function isValidFileType($extension)
     {
         if (in_array($extension, $this->validFileTypes)) {
@@ -129,6 +168,11 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * Check whether or not a folder already exists in the target directory. Returns true if the folder does not exist.
+     * @param $targetDir, the directory to check
+     * @return boolean
+     */
     private function validateTargetFolder($targetDir)
     {
         if (!file_exists($targetDir)) {
@@ -138,6 +182,9 @@ class FileHandler
         }
     }
     //-------------------------------------------------------------------------
+    /** 
+     * This function is responsible for sending the AJAX reply.
+     */
     public function sendReply()
     {
         // send the reply.

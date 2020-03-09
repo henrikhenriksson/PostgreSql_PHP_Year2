@@ -10,7 +10,9 @@
  * hehe0601@student.miun.se
  ******************************************************************************/
 
-
+/**
+ * This class is responsible for handling login requests sent by a user.
+ */
 class LoginHandler
 {
     private $responseText;
@@ -23,6 +25,11 @@ class LoginHandler
     private $userArray;
     private $currentUser;
 
+    /**
+     * Public constructor setting initial variable values 
+     * @param $pGotName, the name sent to the login.php page by the $_GET subglobal
+     * @param $pGotPassword, the password sent to the login.php page by the $_GET subglobal
+     */
     public function __construct(string $pGotName, string $pGotPassword)
     {
         $this->validUser = false;
@@ -41,7 +48,11 @@ class LoginHandler
     }
 
 
-
+    /**
+     * Get the current user if the user exists in the userArray.
+     * @return $key, the member object if found in the array
+     * @return $null, if no member was found.
+     */
     private function getUser()
     {
         foreach ($this->userArray as $key) {
@@ -52,12 +63,27 @@ class LoginHandler
         }
         return null;
     }
-
+    /**
+     * Get the value of the current user
+     * @return $currentUser, member class object
+     */
     public function getCurrentUser()
     {
         return $this->currentUser;
     }
+    /**
+     * Get the value of userArray
+     * @return $this->userArray
+     */
+    public function getUserArray()
+    {
+        return $this->userArray;
+    }
 
+    /**
+     * Validate the password the user has entered
+     * @return boolean
+     */
     public function validatePassword()
     {
         if ($this->currentUser != null) {
@@ -72,7 +98,10 @@ class LoginHandler
             return false;
         }
     }
-
+    /**
+     * Perform a check if the current user is an admin.
+     * @return boolean
+     */
     public function getisAdmin()
     {
         foreach ($this->currentUser->getRoleArray() as $key) {
@@ -83,6 +112,9 @@ class LoginHandler
         return false;
     }
 
+    /**
+     * Set the linkarray used to display links on the aside part of the application. Checks member roles and adds links accordingly.
+     */
     public function setLinkArray()
     {
         // $linkArray = [];
@@ -97,6 +129,9 @@ class LoginHandler
         return $this->linkArray;
     }
 
+    /** 
+     * Set the AJAX response message depending on the validation of the user credentials.
+     */
     public function setResponseText()
     {
         if ($this->validUser && $this->validPassword) {
@@ -111,19 +146,13 @@ class LoginHandler
         return $this->responseText;
     }
 
-
+    /**
+     * This function is responsible for sending the AJAX response.
+     */
     public function sendReply()
     {
         // send the reply.
         header('Content-Type: application/json');
         echo json_encode($this->responseText);
-    }
-
-    /**
-     * Get the value of userArray
-     */
-    public function getUserArray()
-    {
-        return $this->userArray;
     }
 }
