@@ -60,6 +60,7 @@ if (isset($_POST['newCategory'])) {
         header("Location: userpage.php");
     }
 }
+// This section handles if the user har selected a category to remove
 if (isset($_POST['removeCategory'])) {
 
     $currentCategoryId = 0;
@@ -145,7 +146,7 @@ if (isset($_POST['removeCategory'])) {
                                 <option><?php echo $key->getCategoryName() ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <button type="submit" id="removeCategory">Remove Category</button>
+                        <button type="submit" id="removeCategoryButton">Remove Category</button>
                     </form>
                     <p id="categoryStatus"><?php echo $removeMessage ?></p>
                 </div>

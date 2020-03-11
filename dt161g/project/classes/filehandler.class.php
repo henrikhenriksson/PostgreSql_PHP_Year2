@@ -47,9 +47,9 @@ class FileHandler
      */
     public function createCategoryFolder($memberName, $categoryName)
     {
-        $dirToCreate = "{$this->targetDir}/{$memberName}/{$categoryName}/";
+        $dirToCreate = "{$this->targetDir}/{$memberName}/{$categoryName}";
         if ($this->validateTargetFolder($dirToCreate)) {
-            mkdir($dirToCreate, 0777, true);
+            mkdir($dirToCreate, true);
         }
     }
     /**

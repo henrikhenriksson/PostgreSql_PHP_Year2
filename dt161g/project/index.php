@@ -42,7 +42,11 @@ require('util.php');
         </aside>
         <section>
             <?php require 'includeWelcome.php' ?>
-            <p class="bold red">Du är inloggad som användare: <?php echo $_SESSION['validLogin'] ?></p>
+            <?php if (isset($_SESSION['validLogin'])) : ?>
+                <p class="bold red">Du är inloggad som användare: <?php echo $_SESSION['validLogin'] ?></p>
+            <?php else : ?>
+                <p class="bold red">Du är inte inloggad.</p>
+            <?php endif; ?>
         </section>
     </main>
     <footer>
