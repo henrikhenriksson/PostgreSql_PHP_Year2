@@ -18,6 +18,11 @@ if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
 } else {
     $title = "DT161G- Adminsida";
 }
+// fetch all members when the site loads or reloads.
+$userArray = dbHandler::getInstance()->getMembersFromDataBase();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +31,7 @@ if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DT161G-<?php echo $title ?>-member</title>
+    <title>DT161G-<?php echo $title ?>-Admin</title>
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/main.js"></script>
 </head>

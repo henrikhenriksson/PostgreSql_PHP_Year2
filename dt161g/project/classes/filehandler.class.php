@@ -101,18 +101,20 @@ class FileHandler
 
         // Check for unsupported file types:
         if ($imgExt !== "gif" && $imgExt !== "png") {
+            // Read the Exif data:
             $exif = exif_read_data($FILES["file"]["tmp_name"]);
+            // If the file contains exif information:
             if ($exif) {
+                // fetch the DateTime variable
                 $dateTime = $exif['DateTime'];
-
-                $this->responseText['timeStamp'] = $dateTime;
             } else {
-                $this->responseText['timeStamp'] = date("Y-m-d H:i:s", 946681200);
+                $dateTime = date("Y-m-d H:i:s", 946681200);
             }
         } else {
-            $this->responseText['timeStamp'] = date("Y-m-d H:i:s", 946681200);
+            $dateTime = date("Y-m-d H:i:s", 946681200);
         }
 
+        // Check in turn for valid image type, duplicates, filesize and img extension. If all returns rue, ValidUpload is set to true.
         if (self::isImage($FILES)) {
             if (self::isNotDupe($targetFile)) {
                 if (self::isNotLarge($FILES)) {
@@ -131,9 +133,10 @@ class FileHandler
             $this->responseText['msg'] = "The file you tried to upload is not an image. File could not be uploaded.";
         }
 
+        // If the validUpload is true, attempt to upload the image to the server and database.
         if ($this->validUpload) {
             if (move_uploaded_file($FILES["file"]["tmp_name"], $targetFile)) {
-                dbHandler::getInstance()->addNewImage(basename($FILES["file"]["name"]), $currentCategoryId);
+                dbHandler::getInstance()->addNewImage(basename($FILES["file"]["name"]), $dateTime, $currentCategoryId);
                 $this->responseText['msg'] = "The file " . basename($FILES["file"]["name"]) . " has been uploaded.";
             } else {
                 $this->responseText['msg'] =  "Sorry, there was an error that was probably not your fault uploading your file.";

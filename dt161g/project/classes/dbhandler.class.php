@@ -64,12 +64,12 @@ class dbHandler
     /**
      * This function is responsible for uploading information about an image to the database.
      */
-    public function addNewImage($imgName, $category_Id)
+    public function addNewImage($imgName, $dateTime, $category_Id)
     {
         if ($this->connect()) {
-            $queryStr = "INSERT INTO dt161g_project.image (img_name, category_id) VALUES($1,$2)";
+            $queryStr = "INSERT INTO dt161g_project.image (img_name, img_date, category_id) VALUES($1,$2,$3)";
 
-            $result = pg_query_params($this->dbconn, $queryStr, array($imgName, $category_Id));
+            $result = pg_query_params($this->dbconn, $queryStr, array($imgName, $dateTime, $category_Id));
 
             if (!$result) {
                 echo "Error sending request: <br>\n";
@@ -164,7 +164,7 @@ class dbHandler
         if ($result) {
             for ($i = 0; $i < pg_num_rows($result); $i++) {
                 $databaseObj = pg_fetch_object($result);
-                $fetchedImage = new Image($databaseObj->id, $databaseObj->img_name, $databaseObj->category_id);
+                $fetchedImage = new Image($databaseObj->id, $databaseObj->img_name, $databaseObj->img_date, $databaseObj->category_id);
                 $databaseImages[] = $fetchedImage;
             }
             pg_free_result($result);

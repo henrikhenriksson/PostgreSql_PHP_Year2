@@ -71,6 +71,8 @@ if (isset($_GET["user"])) {
             <div id="ImageShowCase">
                 <?php if ($currentUser != null && $currentCategory != null) : ?>
                     <?php foreach ($currentCategory->getImages() as $image) : ?>
+                        <p class="imgInfo">Namn: <?php echo $image->getImgName() ?></p>
+                        <p class="imgInfo">Datum: <?php echo $image->getDateTime();   ?></p>
                         <img src="<?php echo $imageDir ?>/<?php echo $currentCategory->getCategoryName() ?>/<?php echo $image->getImgName() ?>" alt="image loaded server." class="image">
                     <?php endforeach; ?>
                 <?php elseif ($currentUser != null && !isset($_GET['category'])) : ?>

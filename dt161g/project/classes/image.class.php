@@ -17,6 +17,7 @@ class Image
 {
     private $id;
     private $imgName;
+    private $dateTime;
     private $categoryId;
 
     /**
@@ -25,10 +26,11 @@ class Image
      * @param $pImgName, the name of the image.
      * @param $pCategoryId, the id of the category the image adheres to.
      */
-    public function __construct(int $pId, string $pImgName, int $pCategoryId)
+    public function __construct(int $pId, string $pImgName, string $pDateTime, int $pCategoryId)
     {
         $this->id = $pId;
         $this->imgName = $pImgName;
+        $this->dateTime = $pDateTime;
         $this->categoryId = $pCategoryId;
     }
 
@@ -48,6 +50,14 @@ class Image
     public function getImgName()
     {
         return $this->imgName;
+    }
+    /**
+     * Get the value of date_Time
+     * @return $this->dateTime;
+     */
+    public function getDateTime()
+    {
+        return $this->dateTime;
     }
 
     /**

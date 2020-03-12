@@ -59,7 +59,7 @@ VALUES
 CREATE TABLE dt161G_Project.category (
     id SERIAL PRIMARY KEY,
     category_name text NOT NULL CHECK (category_name <> ''),
-    member_id INTEGER REFERENCES dt161G_Project.member(id),
+    member_id INTEGER REFERENCES dt161G_Project.member(id) ON DELETE CASCADE,
     CONSTRAINT unique_category_member UNIQUE(category_name, member_id)
   ) WITHOUT OIDS;
 -- Create the Image table:
