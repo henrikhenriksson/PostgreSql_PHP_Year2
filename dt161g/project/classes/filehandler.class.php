@@ -71,9 +71,9 @@ class FileHandler
      */
     public function createUserFolder($memberName)
     {
-        $dirToCreate = "{$this->targetDir}/{$memberName}/";
+        $dirToCreate = "{$this->targetDir}/{$memberName}";
         if ($this->validateTargetFolder($dirToCreate)) {
-            mkdir($dirToCreate, 0777, true);
+            mkdir($dirToCreate, true);
         }
     }
     //-------------------------------------------------------------------------

@@ -21,6 +21,30 @@ if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
 // fetch all members when the site loads or reloads.
 $userArray = dbHandler::getInstance()->getMembersFromDataBase();
 
+if (isset($_SESSION['createMessage'])) {
+    $createMessage = $_SESSION['createMessage'];
+    unset($_SESSION['createMessage']);
+} elseif (isset($_SESSION['removeMessage'])) {
+    $removeMessage = $_SESSION['removeMessage'];
+    unset($_SESSION['removeMessage']);
+}
+
+if (isset($_POST['userName'])) {
+
+    $newUserName = strtolower($_POST['userName']);
+    $validUserName = false;
+
+    foreach ($userArray as $key) {
+        if ($key->getUserName() == $newUserName) {
+            $validUserName = false;
+            $_SESSION['createMessage'] = "A user with that name already exists!";
+        }
+    }
+    if ($validUserName) {
+
+        FileHandler::getInstance()->createUserFolder($newUserName);
+    }
+}
 
 
 ?>
@@ -48,8 +72,58 @@ $userArray = dbHandler::getInstance()->getMembersFromDataBase();
             <?php require 'includeUsers.php'; ?>
         </aside>
         <section>
-            <h2>Medlemssida</h2>
-            <p class="IntroText">Denna sida skall bara kunna ses av inloggade administratörer. <br> Om jag hinner med kommer man även att kunna lägga till användare på den här sidan.</p>
+            <h2>Administratörssida</h2>
+            <p class="IntroText">Denna sida skall bara kunna ses av inloggade administratörer. Här kan du som administratör se alla nuvarande medlemmar och lägga till eller ta bort medlemmar.<br>
+                <div id="memberTable">
+                    <p>Nuvarande medlemmar:</p>
+                    <table>
+                        <tr>
+                            <th>Namn:</th>
+                            <th>Roll:</th>
+                        </tr>
+                        <?php foreach ($userArray as $uKey) : ?>
+                            <tr>
+                                <td><?php echo $uKey->getUserName() ?></td>
+                                <td>
+                                    <?php foreach ($uKey->getRoleArray() as $rKey) : ?>
+                                        <?php echo $rKey->getrole() ?>
+                                    <?php endforeach; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    <div id="newMember">
+                        <p class="bold">Add New Member:</p>
+                        <form id="addMemberForm" action="admin.php" method="POST">
+                            <label><b>Username:</b></label>
+                            <input type="text" placeholder="Enter Username" name="userName" id="uname" required maxlength="10" autocomplete="off" required>
+                            <label><b>Password:</b></label>
+                            <input type="password" placeholder="Enter Password" name="psw" id="psw" required minlength="1" required>
+                            <br>
+                            <p>Select Roles to assign: </p>
+                            <input type="radio" name="role" id="onlyMember" checked />
+                            <label for="Member">Member</label>
+                            <input type="radio" name="role" id="onlyAdmin" />
+                            <label for="Admin">Admin</label>
+                            <input type="radio" name="role" id="bothRoles" />
+                            <label for="memberAndAdmin">Admin & Member</label>
+                            <br>
+                            <button type="submit" id="newMemberButton">Add new Member</button>
+                        </form>
+                    </div>
+                    <div id="removeMember">
+                        <p class="bold">Remove Member: </p>
+                        <p class="IntroText"><span class="red">Warning:</span>This will also remove any images this user has uploaded</p>
+                        <form id="memberRemoveForm" action="admin.php" method="POST">
+                            <select name="removeMemberSelect" id="memberRemoveSelector">
+                                <?php foreach ($userArray as $uKey) : ?>
+                                    <option><?php echo $uKey->getUserName() ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="submit" id="removeMemberButton">Remove Member</button>
+                        </form>
+                    </div>
+                </div>
         </section>
     </main>
     <footer>

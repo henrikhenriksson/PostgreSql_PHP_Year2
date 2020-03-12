@@ -174,7 +174,9 @@ footer {
 
 #categoryDiv,
 #uploadDiv,
-#removeCategory {
+#removeCategory,
+#newMember,
+#removeMember {
   background-color: grey;
   border: 1px solid black;
 }
