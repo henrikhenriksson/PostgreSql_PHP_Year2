@@ -66,7 +66,8 @@ CREATE TABLE dt161G_Project.category (
   DROP TABLE IF EXISTS dt161G_Project.image CASCADE;
 CREATE TABLE dt161G_Project.image (
     id SERIAL PRIMARY KEY,
-    img_name text NOT NULL CHECK (img_Name <> ''),
+    img_name text NOT NULL CHECK (img_name <> ''),
+    img_date text NOT NULL CHECK (img_date <> ''),
     category_id INTEGER references dt161G_Project.category(id) ON DELETE CASCADE,
     CONSTRAINT unique_img_category UNIQUE(img_name, category_id)
   ) WITHOUT OIDS;

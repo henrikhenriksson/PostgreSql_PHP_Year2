@@ -19,7 +19,7 @@ $link_array = [
 // Initialize the session.
 session_start();
 
-foreach ($_SESSION as $key => $value) {
+foreach ($_SESSION as $key) {
     unset($_SESSION[$key]);
 }
 

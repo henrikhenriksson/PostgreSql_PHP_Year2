@@ -20,7 +20,7 @@ if ($login->validatePassword()) {
     // set session variable containing user name:
     $_SESSION['validLogin'] = $_GET['name'];
     // Add the links to a link array, used to make sure the menu items persists across page refreshes.
-    $_SESSION['currentUser'] = $login->getCurrentUser();
+    // $_SESSION['currentUser'] = $login->getCurrentUser();
     $_SESSION['sessionLinks'] = $login->setLinkArray();
     $_SESSION['userLinks'] = $login->getUserArray();
 

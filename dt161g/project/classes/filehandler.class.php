@@ -9,6 +9,7 @@
  * hehe0601
  * hehe0601@student.miun.se
  ******************************************************************************/
+date_default_timezone_set('Europe/Stockholm');
 
 /** This class is responsible for handling file operations such as saving to file and loading from file. */
 class FileHandler
@@ -96,6 +97,21 @@ class FileHandler
 
         $targetFile = "{$this->targetDir}/{$currentUser->getUserName()}/{$category}/" . basename($FILES["file"]["name"]);
         $imgExt = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $dateTime = "";
+
+        // Check for unsupported file types:
+        if ($imgExt !== "gif" && $imgExt !== "png") {
+            $exif = exif_read_data($FILES["file"]["tmp_name"]);
+            if ($exif) {
+                $dateTime = $exif['DateTime'];
+
+                $this->responseText['timeStamp'] = $dateTime;
+            } else {
+                $this->responseText['timeStamp'] = date("Y-m-d H:i:s", 946681200);
+            }
+        } else {
+            $this->responseText['timeStamp'] = date("Y-m-d H:i:s", 946681200);
+        }
 
         if (self::isImage($FILES)) {
             if (self::isNotDupe($targetFile)) {
