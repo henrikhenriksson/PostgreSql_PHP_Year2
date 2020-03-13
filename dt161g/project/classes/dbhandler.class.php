@@ -97,6 +97,56 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
+    public function addNewUser($newUserName, $newUserPsw, $newUserRoles)
+    {
+        if ($this->connect()) {
+            $queryStr = "INSERT INTO dt161g_project.member (username, password) VALUES($1,$2) RETURNING id;";
+            $result = pg_query_params($this->dbconn, $queryStr, array($newUserName, $newUserPsw));
+
+            $newUserId = pg_fetch_result($result, null, 'id');
+
+            foreach ($newUserRoles as $key) {
+                $this->addNewMemberRoles($newUserId, $key);
+            }
+
+            if (!$result) {
+                echo "Error sending request: <br>\n";
+                pg_last_error($this->dbconn);
+            }
+
+            $this->disconnect();
+        }
+    }
+    //-------------------------------------------------------------------------
+    private function addNewMemberRoles(int $newUserId, int $newUserRoleId)
+    {
+
+        $queryStr = "INSERT INTO dt161g_project.member_role (member_id, role_id) VALUES($1,$2);";
+        $result = pg_query_params($this->dbconn, $queryStr, array($newUserId, $newUserRoleId));
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //-------------------------------------------------------------------------
+    public function removeUser($memberId)
+    {
+        if ($this->connect()) {
+
+            $queryStr = "DELETE FROM dt161g_project.member WHERE id = $1;";
+            $result = pg_query_params($this->dbconn, $queryStr, array($memberId));
+
+            if (!$result) {
+                echo "Error sending request: <br>\n";
+                pg_last_error($this->dbconn);
+            }
+            $this->disconnect();
+        }
+    }
+    //-------------------------------------------------------------------------
+
     /**
      * This functions sends a request to the database to remove a specific category from a member.
      * @param int the category id.

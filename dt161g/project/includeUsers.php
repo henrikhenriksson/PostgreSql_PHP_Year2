@@ -18,8 +18,8 @@ $users = dbHandler::getInstance()->getMembersFromDataBase();
     <h2>Användare</h2>
     <ul>
         <?php foreach ($users as $uKey) : ?>
-            <li><a href="<?php echo "images.php?user={$uKey->getUserName()}";
-                            ?>"><?php echo strtoupper($uKey->getUserName()); ?></a></li>
+            <li><a href="images.php?user=<?php echo htmlspecialchars($uKey->getUserName()); ?>">
+                    <?php echo strtoupper(htmlspecialchars($uKey->getUserName())); ?></a></li>
             <ul>
 
                 <?php foreach ($uKey->getCategories() as $cKey) : ?>

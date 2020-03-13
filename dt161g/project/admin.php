@@ -18,6 +18,8 @@ if (!isset($_SESSION['validLogin']) || !$_SESSION['isAdmin'] = true) {
 } else {
     $title = "DT161G- Adminsida";
 }
+$createMessage = "";
+$removeMessage = "";
 // fetch all members when the site loads or reloads.
 $userArray = dbHandler::getInstance()->getMembersFromDataBase();
 
@@ -31,21 +33,41 @@ if (isset($_SESSION['createMessage'])) {
 
 if (isset($_POST['userName'])) {
 
-    $newUserName = strtolower($_POST['userName']);
-    $validUserName = false;
+    $validUserName = true;
+    $newUserName = strtolower(trim($_POST['userName']));
+    $newUserPsw = trim($_POST['psw']);
+    $newUserRoles = [];
+
+
+    if ($_POST['role'] === "admin") {
+        $newUserRoles[] = 2;
+    } else if ($_POST['role'] === "member") {
+        $newUserRoles[] = 1;
+    } else if ($_POST['role'] === "memberAdmin") {
+        $newUserRoles = [1, 2];
+    }
 
     foreach ($userArray as $key) {
-        if ($key->getUserName() == $newUserName) {
+        if ($key->getUserName() === $newUserName) {
             $validUserName = false;
             $_SESSION['createMessage'] = "A user with that name already exists!";
         }
     }
     if ($validUserName) {
-
+        dbHandler::getInstance()->addNewUser($newUserName, $newUserPsw, $newUserRoles);
         FileHandler::getInstance()->createUserFolder($newUserName);
+        $_SESSION['createMessage'] = "New User has been created successfully.";
     }
 }
-
+if (isset($_POST['removeMemberSelect'])) {
+    $userToRemove = "";
+    foreach ($userArray as $uKey) {
+        if ($_POST['removeMemmberSelect'] === $uKey->getUserName()) {
+            $userToRemove = $uKey;
+        }
+    }
+    dbHandler::getInstance()->removeUser($userToRemove->getId());
+}
 
 ?>
 
@@ -83,7 +105,7 @@ if (isset($_POST['userName'])) {
                         </tr>
                         <?php foreach ($userArray as $uKey) : ?>
                             <tr>
-                                <td><?php echo $uKey->getUserName() ?></td>
+                                <td><?php echo htmlspecialchars($uKey->getUserName())  ?></td>
                                 <td>
                                     <?php foreach ($uKey->getRoleArray() as $rKey) : ?>
                                         <?php echo $rKey->getrole() ?>
@@ -101,15 +123,16 @@ if (isset($_POST['userName'])) {
                             <input type="password" placeholder="Enter Password" name="psw" id="psw" required minlength="1" required>
                             <br>
                             <p>Select Roles to assign: </p>
-                            <input type="radio" name="role" id="onlyMember" checked />
+                            <input type="radio" name="role" id="onlyMember" value="member" checked />
                             <label for="Member">Member</label>
-                            <input type="radio" name="role" id="onlyAdmin" />
+                            <input type="radio" name="role" id="onlyAdmin" value="Admin" />
                             <label for="Admin">Admin</label>
-                            <input type="radio" name="role" id="bothRoles" />
+                            <input type="radio" name="role" id="bothRoles" value="memberAdmin" />
                             <label for="memberAndAdmin">Admin & Member</label>
                             <br>
                             <button type="submit" id="newMemberButton">Add new Member</button>
                         </form>
+                        <p> <?php echo $createMessage ?></p>
                     </div>
                     <div id="removeMember">
                         <p class="bold">Remove Member: </p>
@@ -117,11 +140,12 @@ if (isset($_POST['userName'])) {
                         <form id="memberRemoveForm" action="admin.php" method="POST">
                             <select name="removeMemberSelect" id="memberRemoveSelector">
                                 <?php foreach ($userArray as $uKey) : ?>
-                                    <option><?php echo $uKey->getUserName() ?></option>
+                                    <option><?php echo htmlspecialchars($uKey->getUserName()) ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <button type="submit" id="removeMemberButton">Remove Member</button>
                         </form>
+                        <p> <?php echo $removeMessage ?></p>
                     </div>
                 </div>
         </section>

@@ -52,7 +52,7 @@ class Role
 
     /**
      * Get the value of id
-     * @return $this->id;
+     * @return int
      */
     public function getId()
     {

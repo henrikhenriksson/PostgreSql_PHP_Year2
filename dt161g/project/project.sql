@@ -40,7 +40,7 @@ VALUES
   DROP TABLE IF EXISTS dt161G_Project.member_role;
 CREATE TABLE dt161G_Project.member_role (
     id SERIAL PRIMARY KEY,
-    member_id integer REFERENCES dt161G_Project.member (id),
+    member_id integer REFERENCES dt161G_Project.member (id) ON DELETE CASCADE,
     role_id integer REFERENCES dt161G_Project.role (id),
     CONSTRAINT unique_member_role UNIQUE(member_id, role_id)
   ) WITHOUT OIDS;

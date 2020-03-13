@@ -99,20 +99,21 @@ class FileHandler
         $imgExt = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
         $dateTime = "";
 
-        // Check for unsupported file types:
-        if ($imgExt !== "gif" && $imgExt !== "png") {
-            // Read the Exif data:
-            $exif = exif_read_data($FILES["file"]["tmp_name"]);
-            // If the file contains exif information:
-            if ($exif) {
-                // fetch the DateTime variable
-                $dateTime = $exif['DateTime'];
-            } else {
-                $dateTime = date("Y-m-d H:i:s", 946681200);
-            }
+        // Anonymous function used to swallow warning message about unsupported file formats or if a valid file format is saved without meta data.
+        set_error_handler(function ($errno, $errstr) {
+            global $dateTime;
+            $dateTime = date("Y-m-d H:i:s", 946681200);
+        });
+        $exif = exif_read_data($FILES["file"]["tmp_name"]);
+        restore_error_handler();
+
+        if (isset($exif['DateTime'])) {
+            // fetch the DateTime variable
+            $dateTime = $exif['DateTime'];
         } else {
             $dateTime = date("Y-m-d H:i:s", 946681200);
         }
+
 
         // Check in turn for valid image type, duplicates, filesize and img extension. If all returns rue, ValidUpload is set to true.
         if (self::isImage($FILES)) {
