@@ -32,12 +32,10 @@ if (isset($_SESSION['createMessage'])) {
 }
 
 if (isset($_POST['userName'])) {
-
     $validUserName = true;
     $newUserName = strtolower(trim($_POST['userName']));
     $newUserPsw = trim($_POST['psw']);
     $newUserRoles = [];
-
 
     if ($_POST['role'] === "admin") {
         $newUserRoles[] = 2;
@@ -58,17 +56,28 @@ if (isset($_POST['userName'])) {
         FileHandler::getInstance()->createUserFolder($newUserName);
         $_SESSION['createMessage'] = "New User has been created successfully.";
     }
+    header("Location: admin.php");
 }
 if (isset($_POST['removeMemberSelect'])) {
     $userToRemove = "";
+    $validRemoval = true;
     foreach ($userArray as $uKey) {
-        if ($_POST['removeMemmberSelect'] === $uKey->getUserName()) {
+        if ($_POST['removeMemberSelect'] === $uKey->getUserName()) {
             $userToRemove = $uKey;
         }
     }
-    dbHandler::getInstance()->removeUser($userToRemove->getId());
-}
+    if ($userToRemove->getUserName() === $_SESSION['validLogin']) {
+        $_SESSION['removeMessage'] = "You can not remove yourself!";
+        $validRemoval = false;
+    }
+    if ($validRemoval) {
+        dbHandler::getInstance()->removeUser($userToRemove->getId());
+        FileHandler::getInstance()->deleteUserFolder($userToRemove->getUserName());
+        $_SESSION['removeMessage'] = "Selected member was removed succesfully!";
+    }
 
+    header("Location: admin.php");
+}
 ?>
 
 <!DOCTYPE html>

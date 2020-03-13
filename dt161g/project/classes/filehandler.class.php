@@ -69,11 +69,39 @@ class FileHandler
     /**
      * This function is responsible for creating a new folder for the user, if one does not already exist.
      */
-    public function createUserFolder($memberName)
+    public function createUserFolder($userName)
     {
-        $dirToCreate = "{$this->targetDir}/{$memberName}";
+        $dirToCreate = "{$this->targetDir}/{$userName}";
         if ($this->validateTargetFolder($dirToCreate)) {
             mkdir($dirToCreate, true);
+        }
+    }
+    //-------------------------------------------------------------------------
+    /**
+     * This function is responsible for removing a user folder from the server if an admin removes the user from the database
+     */
+    public function deleteUserFolder($userName)
+    {
+        $dirToRemove = "{$this->targetDir}/{$userName}";
+        $this->RecursiveRemove($dirToRemove);
+    }
+    //-------------------------------------------------------------------------
+    /**
+     * This function is responsible for recursively removing any subfolders of the user folder, as well as deleting the user folder itself.
+     */
+    private function RecursiveRemove($dirToRemove)
+    {
+        if (is_dir($dirToRemove)) {
+            $objects = scandir($dirToRemove);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($dirToRemove . "/" . $object) == "dir")
+                        $this->RecursiveRemove($dirToRemove . "/" . $object);
+                    else unlink($dirToRemove . "/" . $object);
+                }
+            }
+            reset($objects);
+            rmdir($dirToRemove);
         }
     }
     //-------------------------------------------------------------------------

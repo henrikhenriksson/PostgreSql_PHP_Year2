@@ -17,7 +17,6 @@
 spl_autoload_register(function ($class) {
     $classfilename = strtolower($class);
     include './classes/' . $classfilename . '.class.php';
-    // require((__DIR__) . "/classes/" . $classfilename . '.class.php');
 });
 
 $config = Config::getinstance();

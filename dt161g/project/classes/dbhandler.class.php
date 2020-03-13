@@ -106,7 +106,7 @@ class dbHandler
             $newUserId = pg_fetch_result($result, null, 'id');
 
             foreach ($newUserRoles as $key) {
-                $this->addNewMemberRoles($newUserId, $key);
+                $this->addNewUserRoles($newUserId, $key);
             }
 
             if (!$result) {
@@ -118,7 +118,12 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
-    private function addNewMemberRoles(int $newUserId, int $newUserRoleId)
+    /**
+     * This function is called by the addNewUser to add user roles to the member_role table. 
+     *  @param int $newUserId, the user Id
+     *  @param int $newUserRoleId, the role id
+     */
+    private function addNewUserRoles(int $newUserId, int $newUserRoleId)
     {
 
         $queryStr = "INSERT INTO dt161g_project.member_role (member_id, role_id) VALUES($1,$2);";
@@ -131,6 +136,10 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function sends a request to the database to remove a user based on its unique ID value.
+     * @param int the member id.
+     */
     public function removeUser($memberId)
     {
         if ($this->connect()) {
@@ -146,7 +155,6 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
-
     /**
      * This functions sends a request to the database to remove a specific category from a member.
      * @param int the category id.
