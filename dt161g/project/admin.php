@@ -23,6 +23,7 @@ $removeMessage = "";
 // fetch all members when the site loads or reloads.
 $userArray = dbHandler::getInstance()->getMembersFromDataBase();
 
+// Check if a message has been stored from the previous session and set the status message. The unset call makes sure the message doesnt persist if the page is updated again.
 if (isset($_SESSION['createMessage'])) {
     $createMessage = $_SESSION['createMessage'];
     unset($_SESSION['createMessage']);
@@ -30,13 +31,15 @@ if (isset($_SESSION['createMessage'])) {
     $removeMessage = $_SESSION['removeMessage'];
     unset($_SESSION['removeMessage']);
 }
-
+//-------------------------------------------------------------------------
+// This part is responsible for adding a new member to the database, as well as creating a new folder for the user on the server storage.
 if (isset($_POST['userName'])) {
     $validUserName = true;
     $newUserName = strtolower(trim($_POST['userName']));
     $newUserPsw = trim($_POST['psw']);
     $newUserRoles = [];
 
+    // Check selected roles. As there are only 2 roles in the database currently, it easy to keep track of their ids. This function can/should be expanded upon to actually fetch all possible roles from the database.
     if ($_POST['role'] === "admin") {
         $newUserRoles[] = 2;
     } else if ($_POST['role'] === "member") {
@@ -44,13 +47,14 @@ if (isset($_POST['userName'])) {
     } else if ($_POST['role'] === "memberAdmin") {
         $newUserRoles = [1, 2];
     }
-
+    // Check for unique user name
     foreach ($userArray as $key) {
         if ($key->getUserName() === $newUserName) {
             $validUserName = false;
             $_SESSION['createMessage'] = "A user with that name already exists!";
         }
     }
+    // Perform the creation of the user.
     if ($validUserName) {
         dbHandler::getInstance()->addNewUser($newUserName, $newUserPsw, $newUserRoles);
         FileHandler::getInstance()->createUserFolder($newUserName);
@@ -58,26 +62,31 @@ if (isset($_POST['userName'])) {
     }
     header("Location: admin.php");
 }
+//-------------------------------------------------------------------------
+// This section handles the removal of a user from the database, as well as removing the user folder from the server storage.
 if (isset($_POST['removeMemberSelect'])) {
     $userToRemove = "";
     $validRemoval = true;
+    // Fetch the member object to be removed.
     foreach ($userArray as $uKey) {
         if ($_POST['removeMemberSelect'] === $uKey->getUserName()) {
             $userToRemove = $uKey;
         }
     }
+    // Make sure the admin is not trying to remove him/her self:
     if ($userToRemove->getUserName() === $_SESSION['validLogin']) {
         $_SESSION['removeMessage'] = "You can not remove yourself!";
         $validRemoval = false;
     }
+    // perform the removal.
     if ($validRemoval) {
         dbHandler::getInstance()->removeUser($userToRemove->getId());
         FileHandler::getInstance()->deleteUserFolder($userToRemove->getUserName());
         $_SESSION['removeMessage'] = "Selected member was removed succesfully!";
     }
-
     header("Location: admin.php");
 }
+//---------------------------------------------------------------------------
 ?>
 
 <!DOCTYPE html>

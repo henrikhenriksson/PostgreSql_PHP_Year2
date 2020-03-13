@@ -81,6 +81,8 @@ class dbHandler
     //-------------------------------------------------------------------------
     /**
      * This function is used to upload information about a new category to the server.
+     *  @param int $name, the user name
+     *  @param int $memberid user id
      */
     public function addNewCategory($name, $memberid)
     {
@@ -97,6 +99,12 @@ class dbHandler
         }
     }
     //-------------------------------------------------------------------------
+    /**
+     * This function is called by the addNewUser to add user roles to the member_role table. 
+     *  @param int $newUserName, the user name
+     *  @param int $newUserPsw, the user password
+     *  @param int $newUserRoles, the user roles array
+     */
     public function addNewUser($newUserName, $newUserPsw, $newUserRoles)
     {
         if ($this->connect()) {
