@@ -155,9 +155,6 @@ function processLogout() {
     byId('count').innerHTML = myResponse['msg'];
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
-    if (CURRENT_PAGE.includes('guestbook.php')) {
-      byId('form').style.display = 'none';
-    }
 
     byId('uname').value = '';
     byId('psw').value = '';
