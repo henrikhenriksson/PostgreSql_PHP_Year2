@@ -159,6 +159,9 @@ function processLogout() {
       byId('form').style.display = 'none';
     }
 
+    byId('uname').value = '';
+    byId('psw').value = '';
+
     // if the user is on the userpage page and logged out - redirect to index.
     if (
       CURRENT_PAGE.includes('userpage.php') ||

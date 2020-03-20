@@ -107,10 +107,9 @@ if (isset($_POST['removeCategory'])) {
         <section>
             <p class="bold red">Du är inloggad som användare: <?php echo $_SESSION['validLogin'] ?></p>
             <p class="IntroText">
-                Denna sida skall endast kunna nås om man loggat in.<br>
-                På denna sida så skall ni få en lista på de kategorier/mappar som ni har som användare.<br>
-                Det skall också gå att skapa nya kategorier på denna sida.<br>
-                På denna sida skall man också kunna ladda upp bilder och välja vilken kategori som bilden skall hamna i.
+                Denna sida kan endast besökas av medlemmar som loggat in.<br>
+                På denna sida kan du skapa en egen kategori. När du skapat minst en kategori kan du börja ladda upp bilder. <br> Bilderna måste vara av formaten jpg, jpeg, png eller gif.<br>
+                Dina bilder får inte vara större än 2 MB. För att se dina bilder kan du klicka på länken för ditt användarnamn, eller en specifik kategori du skapat i menyn till vänster.
             </p>
             <div id="categoryDiv">
                 <p class="bold">Create a new Category</p>
