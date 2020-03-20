@@ -19,6 +19,7 @@ class FileHandler
     private $validUpload;
     private $validFileTypes;
     private $targetDir;
+    private $fileSize;
     //-------------------------------------------------------------------------
     /** Private constructor setting initial member variable values. */
     private function __construct()
@@ -27,6 +28,7 @@ class FileHandler
         $this->responseText = [];
         $this->validFileTypes = Config::getInstance()->getFileTypes();
         $this->targetDir = Config::getInstance()->getTargetDir();
+        $this->fileSize = Config::getInstance()->getFileSize();
     }
     //-------------------------------------------------------------------------
     /**
@@ -113,62 +115,66 @@ class FileHandler
      */
     public function validateAndUpload($currentUser, $category, $FILES)
     {
+        $this->responseText['msg'] = "test";
         $this->validUpload = false;
-
-        $currentCategoryId = "";
-
-        foreach ($currentUser->getCategories() as $key) {
-            if ($category === $key->getCategoryName()) {
-                $currentCategoryId = $key->getId();
-            }
-        }
-
-        $targetFile = "{$this->targetDir}/{$currentUser->getUserName()}/{$category}/" . basename($FILES["file"]["name"]);
-        $imgExt = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        $dateTime = "";
-
-        // Anonymous function used to swallow warning message about unsupported file formats or if a valid file format is saved without meta data.
-        set_error_handler(function ($errno, $errstr) {
-            global $dateTime;
-            $dateTime = date("Y-m-d H:i:s", 946681200);
-        });
-        $exif = exif_read_data($FILES["file"]["tmp_name"]);
-        restore_error_handler();
-
-        if (isset($exif['DateTime'])) {
-            // fetch the DateTime variable
-            $dateTime = $exif['DateTime'];
+        if ($_FILES['file']['error'] !== 0) {
+            $this->responseText['msg'] = "Something went wrong when uploading your file to the server. File Size is probably to large.";
         } else {
-            $dateTime = date("Y-m-d H:i:s", 946681200);
-        }
 
+            $currentCategoryId = "";
 
-        // Check in turn for valid image type, duplicates, filesize and img extension. If all returns rue, ValidUpload is set to true.
-        if (self::isImage($FILES)) {
-            if (self::isNotDupe($targetFile)) {
-                if (self::isNotLarge($FILES)) {
-                    if (self::isValidFileType($imgExt)) {
-                        $this->validUpload = true;
+            foreach ($currentUser->getCategories() as $key) {
+                if ($category === $key->getCategoryName()) {
+                    $currentCategoryId = $key->getId();
+                }
+            }
+
+            $targetFile = "{$this->targetDir}/{$currentUser->getUserName()}/{$category}/" . basename($FILES["file"]["name"]);
+            $imgExt = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            // Check in turn for valid image type, duplicates, filesize and img extension. If all returns rue, ValidUpload is set to true.
+            if (self::isNotLarge($FILES)) {
+                if (self::isNotDupe($targetFile)) {
+                    if (self::isImage($FILES)) {
+                        if (self::isValidFileType($imgExt)) {
+                            $this->validUpload = true;
+                        } else {
+                            $this->responseText['msg'] = "Invalid Filetype. Files should only end with gif, jpeg, jpg or png";
+                        }
                     } else {
-                        $this->responseText['msg'] = "Invalid Filetype. Files should only end with gif, jpeg, jpg or png";
+                        $this->responseText['msg'] = "The file you tried to upload is not an image. File could not be uploaded.";
                     }
                 } else {
-                    $this->responseText['msg'] = "File Size is too large. Image could not be uploaded";
+                    $this->responseText['msg'] = "This file already exists on the database. Image could not be uploaded.";
                 }
             } else {
-                $this->responseText['msg'] = "This file already exists on the database. Image could not be uploaded.";
+                $this->responseText['msg'] = "File Size is too large. Image could not be uploaded";
             }
-        } else {
-            $this->responseText['msg'] = "The file you tried to upload is not an image. File could not be uploaded.";
-        }
+            if ($this->validUpload) {
+                $dateTime = "";
+                // Anonymous function used to swallow warning message about unsupported file formats or if a valid file format is saved without meta data.
+                set_error_handler(function ($errno, $errstr) {
+                    global $dateTime;
+                    $dateTime = date("Y-m-d H:i:s", 946681200);
+                });
+                $exif = exif_read_data($FILES["file"]["tmp_name"]);
+                restore_error_handler();
 
-        // If the validUpload is true, attempt to upload the image to the server and database.
-        if ($this->validUpload) {
-            if (move_uploaded_file($FILES["file"]["tmp_name"], $targetFile)) {
-                dbHandler::getInstance()->addNewImage(basename($FILES["file"]["name"]), $dateTime, $currentCategoryId);
-                $this->responseText['msg'] = "The file " . basename($FILES["file"]["name"]) . " has been uploaded.";
-            } else {
-                $this->responseText['msg'] =  "Sorry, there was an error that was probably not your fault uploading your file.";
+                if (isset($exif['DateTime'])) {
+                    // fetch the DateTime variable
+                    $dateTime = $exif['DateTime'];
+                } else {
+                    $dateTime = date("Y-m-d H:i:s", 946681200);
+                }
+
+                // If the validUpload is true, attempt to upload the image to the server and database.
+
+                if (move_uploaded_file($FILES["file"]["tmp_name"], $targetFile)) {
+                    dbHandler::getInstance()->addNewImage(basename($FILES["file"]["name"]), $dateTime, $currentCategoryId);
+                    $this->responseText['msg'] = "The file " . basename($FILES["file"]["name"]) . " has been uploaded.";
+                } else {
+                    $this->responseText['msg'] =  "Sorry, there was an error that was probably not your fault uploading your file.";
+                }
             }
         }
     }
@@ -208,7 +214,7 @@ class FileHandler
      */
     private function isNotLarge($FILES)
     {
-        if ($_FILES['file']['size'] < 5000000) {
+        if ($_FILES['file']['size'] <= 2000000) {
             return true;
         } else {
             return false;

@@ -97,7 +97,7 @@ function processUpload() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processUpload, false);
-    console.log(this.responseText);
+    //console.log(this.responseText);
     let myResponse = JSON.parse(this.responseText);
 
     byId('uploadStatus').innerHTML = myResponse['msg'];

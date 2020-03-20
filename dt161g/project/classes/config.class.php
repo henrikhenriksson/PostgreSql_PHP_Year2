@@ -45,6 +45,14 @@ class Config
         return self::$instance;
     }
     /**
+     * This function is responsible for returning the value of the accepted file size for images to be uploaded to the server.
+     * @return $this->setting['fileSize']
+     */
+    public function getFileSize()
+    {
+        return $this->setting['fileSize'];
+    }
+    /**
      * This function is responsible for returning the value of the image target directory set in the Config file.
      * @return $this->setting['targetdir']
      */

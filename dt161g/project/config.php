@@ -12,14 +12,15 @@
 
 // settings can be changed here:
 $confSettings = [
-    //'host' => "studentpsql.miun.se",
-    'host' => "127.0.0.1",
+    'host' => "studentpsql.miun.se",
+    //'host' => "127.0.0.1",
     'port' => "5432",
     'dbName' => "hehe0601",
     'user' => "hehe0601",
     'pass' => "b0cZeRKbe",
     'debug' => false,
     'targetdir' => __DIR__ . "/../../writeable",
+    'fileSize' => 2000000,
     'validFileTypes' => [
         "gif", "jpeg", "jpg", "png"
     ],
