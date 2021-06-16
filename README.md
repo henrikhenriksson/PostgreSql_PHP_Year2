@@ -1,4 +1,9 @@
-# Information
+# PHP PostgreSQL
+
+## Description
+This repository contains files created for the final project of the PHP course taken at Mid Sweden University. The idea of the course was to progressively add functionality to a provided HTLM skeleton structure, with a final project as the final examination. The code was written with PHP and JavaScript.
+
+## Information from examiner (In Swedish)
 
 Här följer lite information om denna **filstruktur** som du ska använda i kursen för att lösa laborationerna och projektet. Allt du behöver för att genomför kursen ligger i mappen **dt161g**. Lösningen för varje laboration ligger i en egen undermapp döpt till **lab1**, **lab2**, **lab3** och **lab4**. Lösningen för projektet ligger i mappen **project**. Laborationerna måste lösas i turordning.
 
